@@ -7,15 +7,6 @@ CREATE TABLE usuarios (
     ultimo_login TIMESTAMP NULL DEFAULT NULL
 );
 
-CREATE TABLE sessoes (
-    id_sessao INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT,
-    token VARCHAR(255) NOT NULL,
-    info_dispositivo VARCHAR(255),
-    ultimo_acesso TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
-);
-
 CREATE TABLE transacoes (
     id_transacao INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT,
@@ -23,7 +14,6 @@ CREATE TABLE transacoes (
     tipo_transacao ENUM('entrada', 'saida') NOT NULL,
     data_transacao DATE NOT NULL,
     data_criado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    ultima_modificacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
 );
 
