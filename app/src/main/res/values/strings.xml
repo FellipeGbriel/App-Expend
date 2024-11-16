@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Expends</string>
+    <string name="btnCadastro"><b>Cadastrar</b></string>
+    <string name="btnEntrar">Entrar</string>
 </resources>
