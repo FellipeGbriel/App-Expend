@@ -30,7 +30,7 @@
     <Button
         android:id="@+id/btnCadastro"
         android:layout_width="300dp"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:layout_marginTop="276dp"
         android:background="@drawable/custom_button"
         android:gravity="center"
@@ -45,9 +45,9 @@
         app:layout_constraintVertical_bias="0.783" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnEntrar"
         android:layout_width="300dp"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:background="#00000000"
         android:gravity="center"
         android:padding="0dp"
