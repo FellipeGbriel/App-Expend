@@ -1,5 +1,20 @@
 <resources>
     <string name="app_name">Expends</string>
+  
+    <!-- Strings para tela Inicial -->
     <string name="btnCadastro"><b>Cadastrar</b></string>
     <string name="btnEntrar">Entrar</string>
+  
+    <!-- Strings para os Dropdowns -->
+    <string name="dia_prompt">Dia</string>
+    <string name="mes_prompt">Mês</string>
+    <string name="ano_prompt">Ano</string>
+
+    <!-- Strings para os campos de EditText -->
+    <string name="hint_email">Email</string>
+    <string name="hint_senha">Senha</string>
+    <string name="hint_confirmar_senha">Confirmar a Senha</string>
+    <string name="hint_renda_mensal">Sua Renda Mensal</string>
+
+    
 </resources>
