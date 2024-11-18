@@ -4,6 +4,7 @@ CREATE TABLE usuarios (
     hash_senha VARCHAR(255) NOT NULL,
     email VARCHAR(100),
     data_criado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    renda_mensal INT,
     ultimo_login TIMESTAMP NULL DEFAULT NULL
 );
 
