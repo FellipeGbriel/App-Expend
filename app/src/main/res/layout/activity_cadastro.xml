@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/white"
     android:gravity="center_horizontal"
-    android:padding="24dp"
-    android:background="#FFFFFF"
-    android:id="@+id/main">
+    android:orientation="vertical">
 
     <!-- Logo -->
 
@@ -15,80 +14,116 @@
 
     <ImageView
         android:id="@+id/logoImageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:layout_marginBottom="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="100dp"
         android:contentDescription="Logo"
-        android:src="@drawable/logo_e_quadrado" />
+        android:src="@drawable/logo" />
 
     <EditText
         android:id="@+id/emailEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:backgroundTint="#FF9900"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_insert"
         android:hint="@string/hint_email"
         android:inputType="textEmailAddress"
-        android:textColorHint="#FF9900" />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:padding="10dp"
+        android:radius="10dp"
+        android:textColor="@color/orangeExpend"
+        android:textColorHint="#FF9900"
+        android:textSize="16sp" />
 
     <!-- Password Field -->
     <EditText
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="12dp"
-        android:backgroundTint="#FF9900"
+        android:background="@drawable/custom_insert"
         android:hint="@string/hint_senha"
         android:inputType="textPassword"
-        android:textColorHint="#FF9900" />
+        android:padding="10dp"
+        android:textColor="@color/orangeExpend"
+        android:textColorHint="#FF9900"
+        android:textSize="16sp" />
 
     <!-- Confirm Password Field -->
-    <EditText
-        android:id="@+id/confirmPasswordEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:backgroundTint="#FF9900"
-        android:hint="@string/hint_confirmar_senha"
-        android:inputType="textPassword"
-        android:textColorHint="#FF9900" />
 
     <!-- Income Field Label -->
 
     <!-- Dropdowns for Day, Month, Year -->
+    <EditText
+        android:id="@+id/confirmPasswordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/custom_insert"
+        android:hint="@string/hint_confirmar_senha"
+        android:inputType="textPassword"
+        android:padding="10dp"
+        android:textColor="@color/orangeExpend"
+        android:textColorHint="#FF9900"
+        android:textSize="16sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:gravity="center"
-        android:layout_marginBottom="16dp">
+        android:orientation="horizontal">
 
         <Spinner
             android:id="@+id/daySpinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="#FF9900"
-            android:prompt="@string/dia_prompt" />
+            android:background="@drawable/spinner_layout"
+            android:gravity="center"
+            android:padding="12dp"
+            android:popupBackground="@color/white"
+            android:prompt="@string/dia_prompt"
+            android:textSize="16sp"
+            android:theme="@style/spinnerPersonalizado" />
 
         <Spinner
             android:id="@+id/monthSpinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:backgroundTint="#FF9900"
-            android:prompt="@string/mes_prompt" />
+            android:background="@drawable/spinner_layout"
+            android:gravity="center"
+            android:padding="12dp"
+            android:popupBackground="@color/white"
+            android:prompt="@string/mes_prompt"
+            android:textSize="16sp"
+            android:theme="@style/spinnerPersonalizado" />
 
         <Spinner
             android:id="@+id/yearSpinner"
-            android:layout_width="0dp"
+            android:prompt="@string/ano_prompt"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:backgroundTint="#FF9900"
-            android:prompt="@string/ano_prompt" />
+            android:background="@drawable/spinner_layout"
+            android:gravity="center"
+            android:padding="12dp"
+            android:popupBackground="@color/white"
+            android:textSize="16sp"
+            android:theme="@style/spinnerPersonalizado"
+            android:layout_width="0dp"/>
     </LinearLayout>
 
     <!-- Error Message -->
@@ -98,17 +133,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
-        android:backgroundTint="#FF9900"
+        android:background="@drawable/custom_insert"
         android:hint="@string/hint_renda_mensal"
         android:inputType="numberDecimal"
-        android:textColorHint="#FF9900" />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:padding="10dp"
+        android:textColor="@color/orangeExpend"
+        android:textColorHint="@color/orangeExpend"
+        android:textSize="16sp" />
 
     <!-- Submit Button -->
     <Button
         android:id="@+id/submitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/custom_button_1"
+        android:gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:padding="8dp"
         android:text="Enviar"
-        android:backgroundTint="#FF9900"
-        android:textColor="#FFFFFF" />
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 </LinearLayout>
