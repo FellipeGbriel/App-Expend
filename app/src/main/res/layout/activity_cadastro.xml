@@ -21,7 +21,8 @@
         android:layout_marginTop="40dp"
         android:layout_marginBottom="100dp"
         android:contentDescription="Logo"
-        android:src="@drawable/logo" />
+        android:src="@drawable/logo"
+        tools:ignore="HardcodedText" />
 
     <EditText
         android:id="@+id/emailEditText"
