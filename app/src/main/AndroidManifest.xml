@@ -13,7 +13,16 @@
         android:theme="@style/Base.Theme.Expends"
         tools:targetApi="31">
         <activity
+            android:name=".RecuperacaoEnviada"
+            android:exported="false" />
+        <activity
+            android:name=".Recuperacao"
+            android:exported="false" />
+        <activity
             android:name=".CadastroActivity"
+            android:exported="true" />
+        <activity
+            android:name=".LoginActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
