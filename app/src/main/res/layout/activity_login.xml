@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="24dp"
+    android:background="#FFFFFF"
+    android:id="@+id/main">
+
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="100dp"
+        android:contentDescription="Logo"
+        android:src="@drawable/logo"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/emailEditText"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:textColor="@color/orangeExpend"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/custom_insert"
+        android:hint="@string/hint_email"
+        android:inputType="textEmailAddress"
+        android:textColorHint="#FF9900" />
+
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:textColor="@color/orangeExpend"
+        android:layout_marginBottom="12dp"
+        android:hint="@string/hint_senha"
+        android:inputType="textPassword"
+        android:background="@drawable/custom_insert"
+        android:textColorHint="#FF9900" />
+
+    <TextView
+        android:id="@+id/forgot_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/esqueci_minha_senha"
+        android:textColor="@color/orangeExpend" />
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/custom_button_1"
+        android:text="Entrar"
+        android:textColor="@android:color/white" />
+
+
+</LinearLayout>
