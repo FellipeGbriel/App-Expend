@@ -18,6 +18,8 @@
     <string name="esqueci_minha_senha"><u>Esqueci minha senha</u></string>
     <string name="hint_recuperacao_email"><b>Insira o seu email para recuperação</b></string>
     <string name="enviado_email"><b>Enviamos um email de recuperação,\nPor favor confira o seu email</b></string>
+    <string name="hint_nome">Nome</string>
+    <string name="data_de_nascimento">Data de nascimento:</string>
 
 
 </resources>

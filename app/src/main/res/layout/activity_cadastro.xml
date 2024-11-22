@@ -10,8 +10,6 @@
 
     <!-- Logo -->
 
-    <!-- Email Field -->
-
     <ImageView
         android:id="@+id/logoImageView"
         android:layout_width="wrap_content"
@@ -23,6 +21,22 @@
         android:contentDescription="Logo"
         android:src="@drawable/logo"
         tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/nomeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_insert"
+        android:hint="@string/hint_nome"
+        android:inputType="textPersonName"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:padding="10dp"
+        android:radius="10dp"
+        android:textColor="@color/orangeExpend"
+        android:textColorHint="#FF9900"
+        android:textSize="16sp" />
 
     <EditText
         android:id="@+id/emailEditText"
@@ -40,7 +54,6 @@
         android:textColorHint="#FF9900"
         android:textSize="16sp" />
 
-    <!-- Password Field -->
     <EditText
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
@@ -56,11 +69,6 @@
         android:textColorHint="#FF9900"
         android:textSize="16sp" />
 
-    <!-- Confirm Password Field -->
-
-    <!-- Income Field Label -->
-
-    <!-- Dropdowns for Day, Month, Year -->
     <EditText
         android:id="@+id/confirmPasswordEditText"
         android:layout_width="match_parent"
@@ -75,6 +83,16 @@
         android:textColor="@color/orangeExpend"
         android:textColorHint="#FF9900"
         android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/label_dataNascimento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="12dp"
+        android:text="@string/data_de_nascimento"
+        android:textColor="@color/orangeExpend" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -143,8 +161,7 @@
         android:textColor="@color/orangeExpend"
         android:textColorHint="@color/orangeExpend"
         android:textSize="16sp" />
-
-    <!-- Submit Button -->
+    
     <Button
         android:id="@+id/submitButton"
         android:layout_width="match_parent"
