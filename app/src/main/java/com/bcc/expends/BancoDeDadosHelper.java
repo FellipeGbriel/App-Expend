@@ -1,6 +1,7 @@
 package com.bcc.expends;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -84,5 +85,18 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS saldos");
         db.execSQL("DROP TRIGGER IF EXISTS atualiza_saldo");
         onCreate(db);
+    }
+
+    public Cursor getTransacoes(int usuario) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT descricao, valor FROM transacoes WHERE id_usuario =" + usuario, null);
+
+        db.close();
+
+        return cursor;
+
+
     }
 }
