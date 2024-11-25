@@ -77,6 +77,17 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public Cursor getTransacoesHome(int usuario) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT descricao, valor FROM transacoes WHERE id_usuario =" + usuario + " LIMIT 5", null);
+
+        return cursor;
+
+
+    }
+
     public Cursor getTransacoes(int usuario) {
 
         SQLiteDatabase db = this.getReadableDatabase();

@@ -45,7 +45,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
         if (Double.parseDouble(String.valueOf(valor.get(position))) < 0) {
             holder.tvValor.setTextColor(Color.RED);
         } else {
-            holder.tvValor.setTextColor(Color.BLACK);
+            holder.tvValor.setTextColor(Color.GREEN);
         }
 
     }

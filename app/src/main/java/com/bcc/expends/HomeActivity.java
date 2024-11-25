@@ -1,7 +1,10 @@
 package com.bcc.expends;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +26,7 @@ public class HomeActivity extends AppCompatActivity {
     BancoDeDadosHelper bancoDeDadosHelper;
 
     RvAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +54,24 @@ public class HomeActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         displayData();
 
+        Button buttonLancar = findViewById(R.id.adicionar_button);
+        buttonLancar.setOnClickListener((View view) -> {
+//            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+//            startActivity(intent);
+            Toast.makeText(HomeActivity.this, "botão apertado", Toast.LENGTH_SHORT);
+        });
 
+        Button buttonPerfil = findViewById(R.id.perfil_button);
+        buttonPerfil.setOnClickListener((View view) -> {
+//            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+//            startActivity(intent);
+            Toast.makeText(HomeActivity.this, "botão apertado", Toast.LENGTH_SHORT);
+        });
     }
 
     private void displayData() {
 
-        Cursor cursor = bancoDeDadosHelper.getTransacoes(1);
+        Cursor cursor = bancoDeDadosHelper.getTransacoesHome(1);
         if (cursor.getCount() == 0) {
 
             Toast.makeText(this, "Nenhuma transação encontrada", Toast.LENGTH_SHORT).show();
