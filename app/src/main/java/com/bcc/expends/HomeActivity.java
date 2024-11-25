@@ -2,6 +2,7 @@ package com.bcc.expends;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -38,10 +39,18 @@ public class HomeActivity extends AppCompatActivity {
         descricao = new ArrayList<>();
         valor = new ArrayList<>();
         recyclerView = findViewById(R.id.rvTransacoes);
+        TextView tvSaldo = findViewById(R.id.tvSaldo);
         adapter = new RvAdapter(this, valor, descricao);
+
+        String saldo = bancoDeDadosHelper.getSaldo(1);
+
+        tvSaldo.setText("R$ " + saldo);
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         displayData();
+
+
     }
 
     private void displayData() {
@@ -56,6 +65,8 @@ public class HomeActivity extends AppCompatActivity {
             while (cursor.moveToNext()) {
 
                 descricao.add(cursor.getString(0));
+
+
                 valor.add(cursor.getString(1));
 
             }

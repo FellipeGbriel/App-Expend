@@ -1,6 +1,7 @@
 package com.bcc.expends;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
 
@@ -37,7 +39,14 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.tvDescricao.setText(String.valueOf(descricao.get(position)));
-        holder.tvValor.setText(String.valueOf(valor.get(position)));
+        holder.tvValor.setText(String.format(Locale.getDefault(), "R$ %.2f", Double.parseDouble(String.valueOf(valor.get(position)))));
+
+
+        if (Double.parseDouble(String.valueOf(valor.get(position))) < 0) {
+            holder.tvValor.setTextColor(Color.RED);
+        } else {
+            holder.tvValor.setTextColor(Color.BLACK);
+        }
 
     }
 

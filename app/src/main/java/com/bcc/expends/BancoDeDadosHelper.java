@@ -58,21 +58,11 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
                 "AFTER INSERT ON transacoes " +
                 "BEGIN " +
                 "    UPDATE saldos " +
-                "    SET saldo_atual = saldo_atual + " +
-                "        CASE " +
-                "            WHEN NEW.tipo_transacao = 'entrada' THEN NEW.valor " +
-                "            ELSE -NEW.valor " +
-                "        END, " +
-                "        ultima_modificacao = CURRENT_TIMESTAMP " +
+                "    SET saldo_atual = saldo_atual + NEW.valor, ultima_modificacao = CURRENT_TIMESTAMP " +
                 "    WHERE id_usuario = NEW.id_usuario; " +
                 "    " +
                 "    INSERT INTO saldos (id_usuario, saldo_atual, ultima_modificacao) " +
-                "    SELECT NEW.id_usuario, " +
-                "        CASE " +
-                "            WHEN NEW.tipo_transacao = 'entrada' THEN NEW.valor " +
-                "            ELSE -NEW.valor " +
-                "        END, " +
-                "        CURRENT_TIMESTAMP " +
+                "    SELECT NEW.id_usuario, NEW.valor, CURRENT_TIMESTAMP " +
                 "    WHERE NOT EXISTS (SELECT 1 FROM saldos WHERE id_usuario = NEW.id_usuario); " +
                 "END;");
     }
@@ -93,10 +83,25 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery("SELECT descricao, valor FROM transacoes WHERE id_usuario =" + usuario, null);
 
-        db.close();
-
         return cursor;
 
 
+    }
+
+    public String getSaldo(int usuario) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor cursor = db.rawQuery("SELECT saldo_atual FROM saldos WHERE id_usuario = ?", new String[]{String.valueOf(usuario)});
+
+        String saldo = "0.00";
+        if (cursor != null && cursor.moveToFirst()) {
+
+            saldo = cursor.getString(cursor.getColumnIndexOrThrow("saldo_atual"));
+            cursor.close();
+        }
+
+        return saldo;
     }
 }
