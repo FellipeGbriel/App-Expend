@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <!-- Logo -->
+
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="10pt"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="60dp"
+        android:contentDescription="Logo"
+        android:src="@drawable/logo"
+        tools:ignore="HardcodedText" />
+    <!-- Texto "saldo" -->
+    <TextView
+        android:id="@+id/tvSaldoLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="@font/roboto_flex"
+        android:text="Saldo:"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:layout_gravity="left"
+        android:paddingLeft="10pt"
+        android:textStyle="bold" />
+
+    <!-- Valor do saldo -->
+
+    <!-- Linha divisória -->
+
+    <TextView
+        android:id="@+id/tvSaldo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/roboto_flex"
+        android:text="R$ 00000"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:layout_gravity="left"
+        android:paddingLeft="10pt"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_marginTop="50dp"
+        android:layout_marginHorizontal="10pt"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="16dp"
+        android:paddingHorizontal="20dp"
+        android:background="#787474" />
+
+    <!-- RecyclerView para exibir as transações -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTransacoes"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Botões flutuantes -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="16dp">
+
+        <!-- Botão perfil -->
+        <Button
+            android:id="@+id/perfil_button"
+            android:layout_width="50dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/custom_button_esquerda"
+            android:contentDescription="Conta"
+            android:drawableTop="@drawable/custom_button_esquerda_icon"
+            android:paddingLeft="8dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="0dp"
+            android:drawableTint="@color/white"
+            />
+
+        <!-- Botão de adicionar -->
+        <Button
+            android:id="@+id/adicionar_button"
+            android:layout_width="50dp"
+            android:layout_height="48dp"
+            android:background="@drawable/custom_button_direita"
+            android:contentDescription="Adicionar"
+            android:drawableEnd="@drawable/custom_button_direita_icon"
+            android:gravity="center"
+            android:paddingEnd="12dp"
+            android:drawableTint="@color/white"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
