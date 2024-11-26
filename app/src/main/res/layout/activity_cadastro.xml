@@ -22,6 +22,9 @@
         android:src="@drawable/logo"
         tools:ignore="HardcodedText" />
 
+
+    <!-- Password Field -->
+  
     <EditText
         android:id="@+id/nomeEditText"
         android:layout_width="match_parent"
