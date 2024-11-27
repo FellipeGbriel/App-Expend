@@ -88,17 +88,6 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
     }
 
-    public Cursor getTransacoes(int usuario) {
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery("SELECT descricao, valor FROM transacoes WHERE id_usuario =" + usuario, null);
-
-        return cursor;
-
-
-    }
-
     public String getSaldo(int usuario) {
 
         SQLiteDatabase db = this.getReadableDatabase();

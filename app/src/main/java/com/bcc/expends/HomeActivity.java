@@ -1,6 +1,7 @@
 package com.bcc.expends;
 
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -39,6 +40,9 @@ public class HomeActivity extends AppCompatActivity {
             return insets;
         });
 
+        SharedPreferences preferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        int userId = preferences.getInt("user_id", -1);
+
         bancoDeDadosHelper = new BancoDeDadosHelper(this);
         descricao = new ArrayList<>();
         valor = new ArrayList<>();
@@ -46,7 +50,7 @@ public class HomeActivity extends AppCompatActivity {
         TextView tvSaldo = findViewById(R.id.tvSaldo);
         adapter = new RvAdapter(this, valor, descricao);
 
-        String saldo = bancoDeDadosHelper.getSaldo(1);
+        String saldo = bancoDeDadosHelper.getSaldo(userId);
 
         tvSaldo.setText("R$ " + saldo);
 
@@ -71,7 +75,10 @@ public class HomeActivity extends AppCompatActivity {
 
     private void displayData() {
 
-        Cursor cursor = bancoDeDadosHelper.getTransacoesHome(1);
+        SharedPreferences preferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        int userId = preferences.getInt("user_id", -1);
+
+        Cursor cursor = bancoDeDadosHelper.getTransacoesHome(userId);
         if (cursor.getCount() == 0) {
 
             Toast.makeText(this, "Nenhuma transação encontrada", Toast.LENGTH_SHORT).show();
