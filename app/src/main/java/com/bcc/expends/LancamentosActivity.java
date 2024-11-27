@@ -107,13 +107,13 @@ public class LancamentosActivity extends AppCompatActivity {
 
                 descricao = descriptionEditText.getText().toString().trim();
 
-                if ((valueEditText.getText().toString() == "0.0") || (valueEditText.getText() == null)) {
+                if ((valueEditText.getText().toString() == "0.0") || (valueEditText.getText().toString().trim().isEmpty())) {
                     Toast.makeText(LancamentosActivity.this, "Preencha o valor", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 valor = Double.parseDouble(valueEditText.getText().toString().trim());
 
-                if (descricao == "" ) {
+                if (descricao == "" || descriptionEditText.getText().toString().trim().isEmpty()) {
                     Toast.makeText(LancamentosActivity.this, "Preencha a descricao", Toast.LENGTH_SHORT).show();
                     return ;
                 }
