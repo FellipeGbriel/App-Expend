@@ -4,8 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
+
+import java.io.Console;
 
 public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
@@ -37,7 +40,7 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
                 "id_transacao INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "id_usuario INTEGER," +
                 "valor REAL NOT NULL," +
-                "tipo_transacao TEXT NOT NULL CHECK (tipo_transacao IN ('entrada', 'saida'))," +
+                "tipo_transacao TEXT  CHECK (tipo_transacao IN ('entrada', 'saida', ''))," +
                 "descricao TEXT," +
                 "data_transacao DATE NOT NULL," +
                 "data_criado TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
@@ -85,8 +88,8 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
         return cursor;
 
-
     }
+
 
     public Cursor getTransacoes(int usuario) {
 
@@ -114,5 +117,25 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
         }
 
         return saldo;
+    }
+
+    //pega e retorna o valor usuario se for o unico no banco local
+    //TODO add tabela de usuario logado
+    //
+    public int getUsuarioId() {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT id_usuario FROM usuarios", null);
+
+        // Log.i( "Mytag ::  ", String.valueOf("NUMERO:  " + cursor.getCount()));
+        if (cursor.getCount() == 1){
+            return 1;
+        } else if (cursor.getCount() >= 2) {
+            cursor.moveToLast();
+            return cursor.getInt(0);
+        }
+
+        return -1;
     }
 }

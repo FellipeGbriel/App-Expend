@@ -62,7 +62,7 @@
         android:layout_marginTop="30dp"
         android:background="@drawable/custom_button_1"
         android:text="Entrar"
-        android:textColor="@android:color/white" />
+        android:textColor="@color/white" />
 
 
 </LinearLayout>

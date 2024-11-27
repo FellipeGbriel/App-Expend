@@ -1,6 +1,7 @@
 package com.bcc.expends;
 
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -56,9 +57,8 @@ public class HomeActivity extends AppCompatActivity {
 
         Button buttonLancar = findViewById(R.id.adicionar_button);
         buttonLancar.setOnClickListener((View view) -> {
-//            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-//            startActivity(intent);
-            Toast.makeText(HomeActivity.this, "botão apertado", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), LancamentosActivity.class);
+            startActivity(intent);
         });
 
         Button buttonPerfil = findViewById(R.id.perfil_button);

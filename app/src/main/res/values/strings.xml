@@ -22,7 +22,7 @@
     <string name="data_de_nascimento">Data de nascimento:</string>
 
     <string name="label_description">Descrição:</string>
-    <string name="hint_description">Digite a descrição...</string>
+    <string name="hint_description">Descrição...</string>
     <string name="save">Salvar</string>
     <string name="data_do_lancamento">Data do Lançamento:</string>
     <string name="tipo">Tipo</string>
