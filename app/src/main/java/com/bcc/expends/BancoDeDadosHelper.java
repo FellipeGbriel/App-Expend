@@ -1,11 +1,17 @@
 package com.bcc.expends;
 
+import android.content.ContentValues;
+import android.view.View;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
+import java.io.Console;
 
 public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
@@ -39,7 +45,7 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
                 "id_transacao INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "id_usuario INTEGER," +
                 "valor REAL NOT NULL," +
-                "tipo_transacao TEXT NOT NULL CHECK (tipo_transacao IN ('entrada', 'saida'))," +
+                "tipo_transacao TEXT  CHECK (tipo_transacao IN ('entrada', 'saida', ''))," +
                 "descricao TEXT," +
                 "data_transacao DATE NOT NULL," +
                 "data_criado TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
@@ -99,7 +105,6 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
         return cursor;
 
-
     }
 
     public String getSaldo(int usuario) {
@@ -110,6 +115,7 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT saldo_atual FROM saldos WHERE id_usuario = ?", new String[]{String.valueOf(usuario)});
 
         String saldo = "0.00";
+      
         if (cursor != null && cursor.moveToFirst()) {
 
             saldo = cursor.getString(cursor.getColumnIndexOrThrow("saldo_atual"));
@@ -177,5 +183,54 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
             db.endTransaction();
         }
 
+    }
+
+    //pega e retorna o valor usuario se for o unico no banco local
+    //TODO add tabela de usuario logado
+    //
+    public int getUsuarioId() {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT id_usuario FROM usuarios", null);
+
+        // Log.i( "Mytag ::  ", String.valueOf("NUMERO:  " + cursor.getCount()));
+        if (cursor.getCount() == 1){
+            return 1;
+        } else if (cursor.getCount() >= 2) {
+            cursor.moveToLast();
+            return cursor.getInt(0);
+        }
+
+        return -1;
+    }
+
+    public void deleteTransacao(int idTransacao){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("DELETE FROM transacoes WHERE id_transacao = " + idTransacao, null);
+
+    }
+
+    public boolean saveLancamentoToDatabase(int idUsuario, double valor, String descricao, String dataLancamento, Context context) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("id_usuario", idUsuario);
+        values.put("valor", valor);
+        values.put("tipo_transacao", "");
+        values.put("descricao", descricao);
+        values.put("data_transacao", dataLancamento);
+
+        long newRowId = db.insert("transacoes", null, values);
+        //Log.e( "newRowId: ", "return :" + newRowId);
+        if (newRowId != -1) {
+            //Toast.makeText(context, "Lancamento cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            Toast.makeText(context, "Erro ao cadastrar usuário.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 }

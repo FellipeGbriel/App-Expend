@@ -1,0 +1,205 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".MainActivity">
+
+    <!-- Ícone de lixeira -->
+
+    <ImageButton
+        android:id="@+id/lixeiraIcon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/icon_lixeira"
+        android:backgroundTint="@color/orangeExpend"
+        android:contentDescription="lixeira"
+        tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
+    <!-- Botão Salvar -->
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/lixeiraIcon"
+        android:layout_marginStart="236dp"
+        android:layout_marginTop="1dp"
+        android:layout_toEndOf="@id/lixeiraIcon"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:text="@string/save"
+        android:textColor="@color/orangeExpend"
+        tools:ignore="HardcodedText" />
+
+    <!-- Texto "Descrição" acima do campo -->
+    <TextView
+        android:id="@+id/descriptionLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lixeiraIcon"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="80dp"
+        android:text="@string/label_description"
+        android:textColor="@color/orangeExpend"
+        android:textSize="16sp" />
+
+    <!-- Campo de texto com borda arredondada -->
+    <EditText
+        android:id="@+id/descriptionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:layout_below="@id/descriptionLabel"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/custom_insert"
+        android:hint="@string/hint_description"
+        android:inputType="text"
+        android:padding="12dp"
+        android:textColor="@color/orangeExpend"
+        android:textColorHint="@color/orangeExpend"
+        android:textSize="16sp" />
+
+    <!-- Texto "Data do Lançamento" acima dos Spinners -->
+    <TextView
+        android:id="@+id/dataDoLancamentoLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/descriptionEditText"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/data_do_lancamento"
+        android:textColor="@color/orangeExpend"
+        android:textSize="16sp" />
+
+    <!-- Layout para os Spinners (Dia, Mês, Ano) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/date_spinner_layout"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dataDoLancamentoLabel"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/daySpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/spinner_layout"
+            android:gravity="center"
+            android:padding="12dp"
+            android:popupBackground="@color/white"
+            android:prompt="@string/dia_prompt"
+            android:textSize="16sp"
+            android:theme="@style/spinnerPersonalizado" />
+
+        <Spinner
+            android:id="@+id/monthSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:minHeight="48dp"
+            android:background="@drawable/spinner_layout"
+            android:gravity="center"
+            android:padding="12dp"
+            android:popupBackground="@color/white"
+            android:prompt="@string/mes_prompt"
+            android:textSize="16sp"
+            android:theme="@style/spinnerPersonalizado" />
+
+        <Spinner
+            android:id="@+id/yearSpinner"
+            android:prompt="@string/ano_prompt"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:minHeight="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/spinner_layout"
+            android:gravity="center"
+            android:padding="12dp"
+            android:popupBackground="@color/white"
+            android:textSize="16sp"
+            android:theme="@style/spinnerPersonalizado"
+            android:layout_width="0dp" />
+    </LinearLayout>
+
+    <!-- Texto "Tipo" acima do Spinner -->
+    <TextView
+        android:id="@+id/typeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/date_spinner_layout"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/tipo"
+        android:textColor="@color/orangeExpend"
+        android:textSize="16sp"
+        android:visibility="visible" />
+
+    <!-- Spinner único -->
+    <Spinner
+        android:id="@+id/typeSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/typeLabel"
+        android:layout_marginStart="16dp"
+        android:minHeight="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/spinner_layout"
+        android:gravity="center"
+        android:padding="12dp"
+        android:popupBackground="@color/white"
+        android:spinnerMode="dropdown"
+        android:theme="@style/spinnerPersonalizado" />
+
+    <!-- Texto "Valor" acima do campo -->
+    <TextView
+        android:id="@+id/valueLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/typeSpinner"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/label_value"
+        android:textColor="@color/orangeExpend"
+        android:textSize="16sp" />
+
+    <!-- Campo de texto para valor -->
+    <EditText
+        android:id="@+id/valueEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:layout_below="@id/valueLabel"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/custom_insert"
+        android:hint="@string/hint_value"
+        android:inputType="numberDecimal"
+        android:padding="12dp"
+        android:textColor="@color/orangeExpend"
+        android:textColorHint="@color/orangeExpend"
+        android:textSize="16sp" />
+
+</RelativeLayout>
