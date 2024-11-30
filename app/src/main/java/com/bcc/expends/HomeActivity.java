@@ -1,6 +1,7 @@
 package com.bcc.expends;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -47,9 +48,9 @@ public class HomeActivity extends AppCompatActivity {
         descricao = new ArrayList<>();
         valor = new ArrayList<>();
         recyclerView = findViewById(R.id.rvTransacoes);
-        TextView tvSaldo = findViewById(R.id.tvSaldo);
         adapter = new RvAdapter(this, valor, descricao);
 
+        TextView tvSaldo = findViewById(R.id.tvSaldo);
         String saldo = bancoDeDadosHelper.getSaldo(userId);
 
         tvSaldo.setText("R$ " + saldo);
@@ -67,9 +68,8 @@ public class HomeActivity extends AppCompatActivity {
 
         Button buttonPerfil = findViewById(R.id.perfil_button);
         buttonPerfil.setOnClickListener((View view) -> {
-//            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-//            startActivity(intent);
-            Toast.makeText(HomeActivity.this, "botão apertado", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), LogoutActivity.class);
+            startActivity(intent);
         });
     }
 
