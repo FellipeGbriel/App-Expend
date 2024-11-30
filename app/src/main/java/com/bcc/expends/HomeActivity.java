@@ -1,26 +1,3 @@
-package com.bcc.expends;
-
-
-import android.content.Intent;
-import android.database.Cursor;
-import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-
 public class HomeActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
@@ -30,7 +7,6 @@ public class HomeActivity extends AppCompatActivity {
     BancoDeDadosHelper bancoDeDadosHelper;
 
     RvAdapter adapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,65 +19,63 @@ public class HomeActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Recuperando o ID do usuário de SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        int userId = preferences.getInt("user_id", -1);
+
         bancoDeDadosHelper = new BancoDeDadosHelper(this);
         descricao = new ArrayList<>();
         valor = new ArrayList<>();
         idTransacao = new ArrayList<>();
         recyclerView = findViewById(R.id.rvTransacoes);
+        adapter = new RvAdapter(this, valor, descricao);
+
         TextView tvSaldo = findViewById(R.id.tvSaldo);
 
-        String saldo = bancoDeDadosHelper.getSaldo(1);
-        adapter = new RvAdapter(this, valor, descricao);
+        // Usando o userId de SharedPreferences para obter o saldo
+        String saldo = bancoDeDadosHelper.getSaldo(userId);
 
         tvSaldo.setText("R$ " + saldo);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener(getApplicationContext(), recyclerView, new view) {
-//            @Override
-//            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-//
-//            }
-//
-//            @Override
-//            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-//
-//            }
-//        });
+
+        // Exibindo os dados
         displayData();
 
+        // Configurando o botão para adicionar transação
         Button buttonLancar = findViewById(R.id.adicionar_button);
         buttonLancar.setOnClickListener((View view) -> {
             Intent intent = new Intent(getApplicationContext(), LancamentosActivity.class);
             startActivity(intent);
         });
 
+        // Configurando o botão para logout
         Button buttonPerfil = findViewById(R.id.perfil_button);
         buttonPerfil.setOnClickListener((View view) -> {
-//            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-//            startActivity(intent);
-            Toast.makeText(HomeActivity.this, "botão apertado", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), LogoutActivity.class);
+            startActivity(intent);
         });
     }
 
     private void displayData() {
 
-        Cursor cursor = bancoDeDadosHelper.getTransacoesHome(1);
+        // Recuperando o ID do usuário de SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        int userId = preferences.getInt("user_id", -1);
+
+        // Buscando as transações para o usuário
+        Cursor cursor = bancoDeDadosHelper.getTransacoesHome(userId);
         if (cursor.getCount() == 0) {
 
             Toast.makeText(this, "Nenhuma transação encontrada", Toast.LENGTH_SHORT).show();
             return;
-        }else {
+        } else {
 
+            // Adicionando as transações aos arrays de descrição e valor
             while (cursor.moveToNext()) {
 
                 descricao.add(cursor.getString(0));
-
                 valor.add(cursor.getString(1));
 
             }
