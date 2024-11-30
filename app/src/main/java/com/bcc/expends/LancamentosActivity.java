@@ -116,13 +116,20 @@ public class LancamentosActivity extends AppCompatActivity {
                 String ano = yearSpinner.getSelectedItem().toString();
                 String dataLancamento = ano + "-" + mes + "-" + dia;
 
+                String tipo = typeSpinner.getSelectedItem().toString();
+
+                if (tipo.equals("Despesa")) {
+                    valor = Double.parseDouble(valueEditText.getText().toString().trim()) * -1;
+                } else {
+                    valor = Double.parseDouble(valueEditText.getText().toString().trim());
+                }
+
                 descricao = descriptionEditText.getText().toString().trim();
 
                 if ((valueEditText.getText().toString() == "0.0") || (valueEditText.getText().toString().trim().isEmpty())) {
                     Toast.makeText(LancamentosActivity.this, "Preencha o valor", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                valor = Double.parseDouble(valueEditText.getText().toString().trim());
 
                 if (descricao == "" || descriptionEditText.getText().toString().trim().isEmpty()) {
                     Toast.makeText(LancamentosActivity.this, "Preencha a descricao", Toast.LENGTH_SHORT).show();
@@ -131,6 +138,10 @@ public class LancamentosActivity extends AppCompatActivity {
 
                 boolean isCadastrado = dbHelper.saveLancamentoToDatabase(userId, valor, descricao, dataLancamento,LancamentosActivity.this);
                 if (isCadastrado){
+
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                     finish();
                 }
         }});

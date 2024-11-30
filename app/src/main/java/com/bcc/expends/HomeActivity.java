@@ -17,7 +17,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -56,7 +58,8 @@ public class HomeActivity extends AppCompatActivity {
         // Usando o userId de SharedPreferences para obter o saldo
         String saldo = bancoDeDadosHelper.getSaldo(userId);
 
-        tvSaldo.setText("R$ " + saldo);
+        NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        tvSaldo.setText(format.format(Double.parseDouble(saldo)));
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

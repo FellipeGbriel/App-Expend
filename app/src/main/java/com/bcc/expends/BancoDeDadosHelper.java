@@ -223,7 +223,6 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
         values.put("id_usuario", idUsuario);
         values.put("valor", valor);
-        values.put("tipo_transacao", "");
         values.put("descricao", descricao);
         values.put("data_transacao", dataLancamento);
 

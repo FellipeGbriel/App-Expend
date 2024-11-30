@@ -13,6 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.NumberFormat;
 import java.util.Locale;
 
 public class LogoutActivity extends AppCompatActivity {
@@ -48,7 +49,9 @@ public class LogoutActivity extends AppCompatActivity {
 
         TextView tvRenda = findViewById(R.id.tvRenda);
         String renda = bancoDeDadosHelper.getRenda(userId);;
-        tvRenda.setText(String.format(Locale.getDefault(), "R$ %.2f", Double.parseDouble(renda)));;
+
+        NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        tvRenda.setText(format.format(Double.parseDouble(renda)));
 
         Button voltar = findViewById(R.id.btnVoltar);
 
