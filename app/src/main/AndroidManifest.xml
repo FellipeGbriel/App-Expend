@@ -31,6 +31,9 @@
             android:name=".LancamentosActivity"
             android:exported="true" />
         <activity
+            android:name=".LogoutActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

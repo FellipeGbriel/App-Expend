@@ -45,7 +45,6 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
                 "id_transacao INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "id_usuario INTEGER," +
                 "valor REAL NOT NULL," +
-                "tipo_transacao TEXT  CHECK (tipo_transacao IN ('entrada', 'saida', ''))," +
                 "descricao TEXT," +
                 "data_transacao DATE NOT NULL," +
                 "data_criado TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
@@ -75,7 +74,8 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
                 "END;");
 
 
-        // SQL para criar o trigger de atualização de saldo
+        // SQL para criar o trigger de atualização de saldo após delete
+
         db.execSQL("CREATE TRIGGER atualiza_saldo_apos_delete " +
                 "AFTER DELETE ON transacoes " +
                 "BEGIN " +
@@ -206,7 +206,11 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
     }
 
     public void deleteTransacao(int idTransacao){
+
+
         SQLiteDatabase db = this.getReadableDatabase();
+
+        db.execSQL("PRAGMA foreign_keys = ON;");
 
         Cursor cursor = db.rawQuery("DELETE FROM transacoes WHERE id_transacao = " + idTransacao, null);
 

@@ -2,6 +2,7 @@ package com.bcc.expends;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -48,6 +49,9 @@ public class LancamentosActivity extends AppCompatActivity {
         // Inicialize os EditTexts
         descriptionEditText = findViewById(R.id.descriptionEditText);
         valueEditText = findViewById(R.id.valueEditText);
+
+        SharedPreferences preferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        int userId = preferences.getInt("user_id", -1);
 
         // Inicialize os Spinners
         daySpinner = findViewById(R.id.daySpinner);
@@ -103,7 +107,7 @@ public class LancamentosActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int idUsuario;
+
                 double valor;
                 String descricao;
 
@@ -111,8 +115,6 @@ public class LancamentosActivity extends AppCompatActivity {
                 String mes = String.valueOf(monthSpinner.getSelectedItemPosition() + 1);
                 String ano = yearSpinner.getSelectedItem().toString();
                 String dataLancamento = ano + "-" + mes + "-" + dia;
-
-                idUsuario = dbHelper.getUsuarioId();
 
                 descricao = descriptionEditText.getText().toString().trim();
 
@@ -127,7 +129,7 @@ public class LancamentosActivity extends AppCompatActivity {
                     return ;
                 }
 
-                boolean isCadastrado = dbHelper.saveLancamentoToDatabase(idUsuario, valor, descricao, dataLancamento,LancamentosActivity.this);
+                boolean isCadastrado = dbHelper.saveLancamentoToDatabase(userId, valor, descricao, dataLancamento,LancamentosActivity.this);
                 if (isCadastrado){
                     finish();
                 }
