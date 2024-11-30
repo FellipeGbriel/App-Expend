@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -61,23 +62,31 @@ public class LogoutActivity extends AppCompatActivity {
 
         Button btnDelete = findViewById(R.id.btnDelete);
         btnDelete.setOnClickListener((View view) -> {
+            // Cria o AlertDialog para confirmação
+            new AlertDialog.Builder(this)
+                    .setTitle("Confirmar Exclusão")
+                    .setMessage("Tem certeza de que deseja excluir sua conta? Esta ação não pode ser desfeita.")
+                    .setPositiveButton("Sim", (dialog, which) -> {
+                        // Ação quando o usuário confirma
+                        SharedPreferences.Editor editor = preferences.edit();
 
-            SharedPreferences.Editor editor = preferences.edit();
+                        bancoDeDadosHelper.deletarConta(userId);
 
-            bancoDeDadosHelper.deletarConta(userId);
+                        editor.remove("is_logged_in"); // Remove a flag de login
+                        editor.remove("user_id");      // Remove o ID do usuário
+                        editor.apply(); // Aplica as mudanças
 
-            editor.remove("is_logged_in"); // Remove a flag de login
-            editor.remove("user_id");      // Remove o ID do usuário
-            editor.apply(); // Aplica as mudanças
-
-            // Redireciona o usuário para a tela de login ou outra ação
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish(); // Fecha a atividade atual
-
-
-            finish();
+                        // Redireciona o usuário para a tela de login ou outra ação
+                        Intent intent = new Intent(this, LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish(); // Fecha a atividade atual
+                    })
+                    .setNegativeButton("Não", (dialog, which) -> {
+                        // Ação quando o usuário cancela
+                        dialog.dismiss(); // Apenas fecha o diálogo sem fazer nada
+                    })
+                    .show(); // Exibe o diálogo
         });
 
         Button btnLogout = findViewById(R.id.btnLogout);
