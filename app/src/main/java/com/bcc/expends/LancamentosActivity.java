@@ -2,6 +2,7 @@ package com.bcc.expends;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -56,7 +57,7 @@ public class LancamentosActivity extends AppCompatActivity {
 
         //Inicializar os Botões
         Button saveButton = findViewById(R.id.saveButton);
-        ImageButton excludeButton = findViewById(R.id.lixeiraIcon);
+        ImageButton deleteButton = findViewById(R.id.lixeiraIcon);
 
         // Configuração para o Spinner de Dias
         ArrayList<String> days = new ArrayList<>();
@@ -89,7 +90,15 @@ public class LancamentosActivity extends AppCompatActivity {
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(typeAdapter);
 
-        //trigger do botão ao clicar
+        //trigger do botão ao clicar create and delete
+
+        int idLancamento = getIntent().getIntExtra("id_transacao",-1);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dbHelper.deleteTransacao(idLancamento);
+            }
+        });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,34 +127,13 @@ public class LancamentosActivity extends AppCompatActivity {
                     return ;
                 }
 
-                saveLancamentoToDatabase(idUsuario, valor, descricao, dataLancamento);
-                Intent intent = getIntent();
-                startActivity(intent);
-                finish();
+                boolean isCadastrado = dbHelper.saveLancamentoToDatabase(idUsuario, valor, descricao, dataLancamento,LancamentosActivity.this);
+                if (isCadastrado){
+                    finish();
+                }
         }});
     }
 
-    private void saveLancamentoToDatabase(int idUsuario, double valor, String descricao, String dataLancamento) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
 
-        values.put("id_usuario", idUsuario);
-        values.put("valor", valor);
-        values.put("tipo_transacao", "");
-        values.put("descricao", descricao);
-        values.put("data_transacao", dataLancamento);
-
-
-        long newRowId = db.insert("transacoes", null, values);
-        if (newRowId != -1) {
-            Toast.makeText(this, "Lancamento cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
-
-//            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-//            startActivity(intent);
-//            finish();
-        } else {
-            Toast.makeText(this, "Erro ao cadastrar usuário.", Toast.LENGTH_SHORT).show();
-        }
-    }
 
 }

@@ -1,14 +1,24 @@
 package com.bcc.expends;
 
+import static androidx.core.content.ContextCompat.startActivity;
+import static java.security.AccessController.getContext;
+
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.inappmessaging.internal.injection.components.AppComponent;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -19,11 +29,11 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
 
     private ArrayList descricao, valor;
 
+
     public RvAdapter(Context context, ArrayList valor, ArrayList descricao) {
         this.context = context;
         this.descricao = descricao;
         this.valor = valor;
-
     }
 
     @NonNull
@@ -32,7 +42,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
 
         View v = LayoutInflater.from(context).inflate(R.layout.rv_item, parent, false);
 
-        return new ViewHolder(v);
+        return new ViewHolder(v, parent);
     }
 
     @Override
@@ -59,11 +69,25 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
 
         TextView tvDescricao, tvValor;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, ViewGroup parent) {
             super(itemView);
 
             tvDescricao = itemView.findViewById(R.id.descricaoRv);
             tvValor = itemView.findViewById(R.id.valorRv);
+
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext().getApplicationContext(), LancamentosActivity.class);
+                    //intent.putExtra("lancamento", view.getId());
+                    Log.e("onClick: ", "id: " + view.getId());
+                    context.startActivity(intent);
+                }
+            });
+
         }
+
     }
+
 }

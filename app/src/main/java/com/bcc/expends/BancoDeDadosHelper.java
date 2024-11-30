@@ -1,10 +1,13 @@
 package com.bcc.expends;
 
+import android.content.ContentValues;
+import android.view.View;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -67,7 +70,7 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
                 "    INSERT INTO saldos (id_usuario, saldo_atual, ultima_modificacao) " +
                 "    SELECT NEW.id_usuario, NEW.valor, CURRENT_TIMESTAMP " +
                 "    WHERE NOT EXISTS (SELECT 1 FROM saldos WHERE id_usuario = NEW.id_usuario); " +
-                "END;");
+                " END;");
     }
 
     @Override
@@ -95,7 +98,7 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT descricao, valor FROM transacoes WHERE id_usuario =" + usuario, null);
+        Cursor cursor = db.rawQuery("SELECT descricao, valor, id_transacao FROM transacoes WHERE id_usuario =" + usuario, null);
 
         return cursor;
 
@@ -137,5 +140,34 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
         }
 
         return -1;
+    }
+
+    public void deleteTransacao(int idTransacao){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("DELETE FROM transacoes WHERE id_transacao = " + idTransacao, null);
+
+    }
+
+    public boolean saveLancamentoToDatabase(int idUsuario, double valor, String descricao, String dataLancamento, Context context) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("id_usuario", idUsuario);
+        values.put("valor", valor);
+        values.put("tipo_transacao", "");
+        values.put("descricao", descricao);
+        values.put("data_transacao", dataLancamento);
+
+        long newRowId = db.insert("transacoes", null, values);
+        //Log.e( "newRowId: ", "return :" + newRowId);
+        if (newRowId != -1) {
+            //Toast.makeText(context, "Lancamento cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            Toast.makeText(context, "Erro ao cadastrar usuário.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 }

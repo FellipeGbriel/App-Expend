@@ -4,12 +4,14 @@ package com.bcc.expends;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -23,6 +25,7 @@ public class HomeActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ArrayList<String> descricao, valor;
+    ArrayList<Integer> idTransacao;
 
     BancoDeDadosHelper bancoDeDadosHelper;
 
@@ -43,16 +46,33 @@ public class HomeActivity extends AppCompatActivity {
         bancoDeDadosHelper = new BancoDeDadosHelper(this);
         descricao = new ArrayList<>();
         valor = new ArrayList<>();
+        idTransacao = new ArrayList<>();
         recyclerView = findViewById(R.id.rvTransacoes);
         TextView tvSaldo = findViewById(R.id.tvSaldo);
-        adapter = new RvAdapter(this, valor, descricao);
 
         String saldo = bancoDeDadosHelper.getSaldo(1);
+        adapter = new RvAdapter(this, valor, descricao);
 
         tvSaldo.setText("R$ " + saldo);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener(getApplicationContext(), recyclerView, new view) {
+//            @Override
+//            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+//                return false;
+//            }
+//
+//            @Override
+//            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+//
+//            }
+//
+//            @Override
+//            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+//
+//            }
+//        });
         displayData();
 
         Button buttonLancar = findViewById(R.id.adicionar_button);
@@ -81,7 +101,6 @@ public class HomeActivity extends AppCompatActivity {
             while (cursor.moveToNext()) {
 
                 descricao.add(cursor.getString(0));
-
 
                 valor.add(cursor.getString(1));
 
