@@ -97,19 +97,34 @@ public class HomeActivity extends AppCompatActivity {
 
         // Buscando as transações para o usuário
         Cursor cursor = bancoDeDadosHelper.getTransacoesHome(userId);
-        if (cursor.getCount() == 0) {
+        TextView noTransactionsMessage = findViewById(R.id.no_transactions_message);
 
-            Toast.makeText(this, "Nenhuma transação encontrada", Toast.LENGTH_SHORT).show();
-            return;
+        if (cursor.getCount() == 0) {
+            // Nenhuma transação encontrada
+            noTransactionsMessage.setVisibility(View.VISIBLE);  // Exibe a mensagem
+            recyclerView.setVisibility(View.GONE);  // Oculta o RecyclerView
+
+            // Desabilitando o botão ver mais
+            Button buttonVerMais = findViewById(R.id.btnVerMais);
+            buttonVerMais.setEnabled(false);
+            buttonVerMais.setAlpha(0.5f);
+
         } else {
+            noTransactionsMessage.setVisibility(View.GONE);  // Oculta a mensagem
+            recyclerView.setVisibility(View.VISIBLE);  // Exibe o RecyclerView
+
+            //Habilitando o botão ver mais
+            Button buttonVerMais = findViewById(R.id.btnVerMais);
+            buttonVerMais.setEnabled(true);
+            buttonVerMais.setAlpha(1.0f);
 
             // Adicionando as transações aos arrays de descrição e valor
             while (cursor.moveToNext()) {
-
                 descricao.add(cursor.getString(0));
                 valor.add(cursor.getString(1));
-
             }
+
+            adapter.notifyDataSetChanged(); // Notifica o adapter sobre os dados atualizados
         }
     }
 }

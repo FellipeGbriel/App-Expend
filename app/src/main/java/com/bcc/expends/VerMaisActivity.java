@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -117,6 +118,16 @@ public class VerMaisActivity extends AppCompatActivity {
             transacoesOrdenadas.put(mesAno, transacoesPorMesAno.get(mesAno));
         }
         transacoesPorMesAno = transacoesOrdenadas;
+
+        if (transacoesPorMesAno.isEmpty()) {
+            // Exibe a mensagem
+            TextView noTransactionsMessage = findViewById(R.id.no_transactions_message);
+            noTransactionsMessage.setVisibility(View.VISIBLE); // Torna visível a mensagem
+        } else {
+            // Oculta a mensagem, caso haja transações
+            TextView noTransactionsMessage = findViewById(R.id.no_transactions_message);
+            noTransactionsMessage.setVisibility(View.GONE);
+        }
 
         // Atualizar os spinners
         List<String> anosDisponiveis = new ArrayList<>();

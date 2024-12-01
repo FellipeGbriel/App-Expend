@@ -61,6 +61,17 @@
         android:paddingHorizontal="20dp"
         android:background="#787474" />
 
+    <TextView
+        android:id="@+id/no_transactions_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nenhuma transação encontrada"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"/>
+
     <!-- RecyclerView para exibir as transações -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTransacoes"
