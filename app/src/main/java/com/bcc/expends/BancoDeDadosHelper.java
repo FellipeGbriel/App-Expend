@@ -101,7 +101,7 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT descricao, valor FROM transacoes WHERE id_usuario =" + usuario + " ORDER BY data_criado DESC LIMIT 5", null);
+        Cursor cursor = db.rawQuery("SELECT descricao, valor FROM transacoes WHERE id_usuario =" + usuario + " ORDER BY data_transacao DESC LIMIT 5", null);
 
         return cursor;
 
@@ -235,5 +235,10 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
             Toast.makeText(context, "Erro ao cadastrar usuário.", Toast.LENGTH_SHORT).show();
             return false;
         }
+    }
+
+    public Cursor getTransacoesVerMais(int usuario) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT descricao, valor, data_transacao FROM transacoes WHERE id_usuario = ? ORDER BY data_criado DESC", new String[]{String.valueOf(usuario)});
     }
 }
