@@ -11,15 +11,14 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="16dp"/>
 
-        android:textColor="@color/black"/>
-
-    <TextView
-        android:id="@+id/tvDetalhes"
+    <!-- RecyclerView interno para transações -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTransacoes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="4dp"
-        android:textColor="@color/black"/>
+        android:nestedScrollingEnabled="false" />
 
 </LinearLayout>
