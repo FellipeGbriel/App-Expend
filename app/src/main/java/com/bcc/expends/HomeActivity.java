@@ -4,6 +4,7 @@ package com.bcc.expends;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private static final String TAG = "AppExpendLogs";
     RecyclerView recyclerView;
     ArrayList<String> descricao, valor;
     ArrayList<Integer> idTransacao;
@@ -51,28 +53,13 @@ public class HomeActivity extends AppCompatActivity {
         TextView tvSaldo = findViewById(R.id.tvSaldo);
 
         String saldo = bancoDeDadosHelper.getSaldo(1);
-        adapter = new RvAdapter(this, valor, descricao);
+        adapter = new RvAdapter(this, valor, descricao, idTransacao);
 
         tvSaldo.setText("R$ " + saldo);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener(getApplicationContext(), recyclerView, new view) {
-//            @Override
-//            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-//
-//            }
-//
-//            @Override
-//            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-//
-//            }
-//        });
+
         displayData();
 
         Button buttonLancar = findViewById(R.id.adicionar_button);
@@ -92,6 +79,7 @@ public class HomeActivity extends AppCompatActivity {
     private void displayData() {
 
         Cursor cursor = bancoDeDadosHelper.getTransacoesHome(1);
+
         if (cursor.getCount() == 0) {
 
             Toast.makeText(this, "Nenhuma transação encontrada", Toast.LENGTH_SHORT).show();
@@ -101,8 +89,9 @@ public class HomeActivity extends AppCompatActivity {
             while (cursor.moveToNext()) {
 
                 descricao.add(cursor.getString(0));
-
                 valor.add(cursor.getString(1));
+                Log.e(TAG, "posicao da coluna id: " + cursor.getInt(2));
+                idTransacao.add(cursor.getInt(2));
 
             }
         }

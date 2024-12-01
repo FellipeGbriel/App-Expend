@@ -28,12 +28,14 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
     private Context context;
 
     private ArrayList descricao, valor;
+    private ArrayList<Integer> id;
 
 
-    public RvAdapter(Context context, ArrayList valor, ArrayList descricao) {
+    public RvAdapter(Context context, ArrayList valor, ArrayList descricao, ArrayList<Integer> id) {
         this.context = context;
         this.descricao = descricao;
         this.valor = valor;
+        this.id = id;
     }
 
     @NonNull
@@ -50,7 +52,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
 
         holder.tvDescricao.setText(String.valueOf(descricao.get(position)));
         holder.tvValor.setText(String.format(Locale.getDefault(), "R$ %.2f", Double.parseDouble(String.valueOf(valor.get(position)))));
-
+        holder.id = id.get(position);
 
         if (Double.parseDouble(String.valueOf(valor.get(position))) < 0) {
             holder.tvValor.setTextColor(Color.RED);
@@ -68,6 +70,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvDescricao, tvValor;
+        Integer id;
 
         public ViewHolder(@NonNull View itemView, ViewGroup parent) {
             super(itemView);
@@ -75,13 +78,12 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
             tvDescricao = itemView.findViewById(R.id.descricaoRv);
             tvValor = itemView.findViewById(R.id.valorRv);
 
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext().getApplicationContext(), LancamentosActivity.class);
-                    //intent.putExtra("lancamento", view.getId());
-                    Log.e("onClick: ", "id: " + view.getId());
+                    intent.putExtra("id_transacao", id);
+                    Log.e("goToTransacao: ", "id: " + id);
                     context.startActivity(intent);
                 }
             });

@@ -87,12 +87,11 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT descricao, valor FROM transacoes WHERE id_usuario =" + usuario + " LIMIT 5", null);
+        Cursor cursor = db.rawQuery("SELECT descricao, valor, id_transacao FROM transacoes WHERE id_usuario =" + usuario + " LIMIT 5", null);
 
         return cursor;
 
     }
-
 
     public Cursor getTransacoes(int usuario) {
 
@@ -103,6 +102,15 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
         return cursor;
 
 
+    }
+
+    public Cursor getTransacao(int idTransacao) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM transacoes WHERE id_transacao =" + idTransacao, null);
+
+        return cursor;
     }
 
     public String getSaldo(int usuario) {
@@ -142,11 +150,10 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public void deleteTransacao(int idTransacao){
+    public int deleteTransacao(int idTransacao){
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("DELETE FROM transacoes WHERE id_transacao = " + idTransacao, null);
-
+        return db.delete("transacoes","id_transacao = "+ idTransacao, null);
     }
 
     public boolean saveLancamentoToDatabase(int idUsuario, double valor, String descricao, String dataLancamento, Context context) {
@@ -167,6 +174,27 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
             return true;
         } else {
             Toast.makeText(context, "Erro ao cadastrar usuário.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+    public boolean updateLancamentoToDatabase(int idUsuario, double valor, String descricao, String dataLancamento, Context context, Integer idTransacao) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("valor", valor);
+        values.put("tipo_transacao", "");
+        values.put("descricao", descricao);
+        values.put("data_transacao", dataLancamento);
+
+        long newRowId = db.update("transacoes", values, "id_transacao = "+ idTransacao, null);
+        //Log.e( "newRowId: ", "return :" + newRowId);
+        if (newRowId != -1) {
+            //Toast.makeText(context, "Lancamento cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            Toast.makeText(context, "Erro ao atualizar usuário.", Toast.LENGTH_SHORT).show();
             return false;
         }
     }

@@ -1,11 +1,15 @@
 package com.bcc.expends;
 
+import static android.text.TextUtils.isEmpty;
+
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,10 +23,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat.Type;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 public class LancamentosActivity extends AppCompatActivity {
 
+    private final String TAG = "AppExpendLog";
     private EditText descriptionEditText;
     private EditText valueEditText;
     private Spinner daySpinner;
@@ -35,6 +42,7 @@ public class LancamentosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lancamentos);
+         dbHelper = new BancoDeDadosHelper(this);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(Type.systemBars());
@@ -42,8 +50,8 @@ public class LancamentosActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Inicializa Helper de BD
-        dbHelper = new BancoDeDadosHelper(this);
+        Integer idTransacao = getIntent().getIntExtra("id_transacao",0);
+        Log.e(TAG, "id transacao from extra: "+idTransacao);
 
         // Inicialize os EditTexts
         descriptionEditText = findViewById(R.id.descriptionEditText);
@@ -92,13 +100,32 @@ public class LancamentosActivity extends AppCompatActivity {
 
         //trigger do botão ao clicar create and delete
 
-        int idLancamento = getIntent().getIntExtra("id_transacao",-1);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbHelper.deleteTransacao(idLancamento);
+                int issucesso = dbHelper.deleteTransacao(idTransacao);
+                Log.e(TAG, "DELETE: "+ issucesso);
+                finish();
             }
         });
+
+        Log.e(TAG, "inicio do caregamento ");
+        if (idTransacao != 0 && idTransacao > 0){
+
+            Cursor dados = dbHelper.getTransacao(idTransacao);//idTransacao=
+            dados.moveToFirst();
+            Log.e(TAG, "teste consulta id:" + Arrays.toString(dados.getColumnNames()));
+            descriptionEditText.setText(dados.getString(4));
+            valueEditText.setText(dados.getString(2));
+
+            List<String> data = Arrays.asList(dados.getString(5).split("-"));
+            Log.e(TAG, "Data e assim: "+ data.get(0)+ " "+ data.get(1)+ " " + data.get(2) );
+            daySpinner.setSelection( Integer.parseInt(data.get(2)) - 1);
+            monthSpinner.setSelection(Integer.parseInt(data.get(1)) -1);
+            yearSpinner.setSelection(years.indexOf(data.get(0)));
+
+            typeSpinner.setSelection(0);
+        }
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,13 +154,28 @@ public class LancamentosActivity extends AppCompatActivity {
                     return ;
                 }
 
-                boolean isCadastrado = dbHelper.saveLancamentoToDatabase(idUsuario, valor, descricao, dataLancamento,LancamentosActivity.this);
-                if (isCadastrado){
-                    finish();
+                if (typeSpinner.getSelectedItemPosition() == 0){
+                    valor = (Math.abs(valor)) * -1.0;
+                }
+
+                if(idTransacao!=0) {
+                     boolean update = dbHelper.updateLancamentoToDatabase(idUsuario, valor, descricao, dataLancamento,LancamentosActivity.this, idTransacao);
+                     if (update){
+                         getParent().finish();
+                         Intent intent = new Intent(LancamentosActivity.this, HomeActivity.class);
+                         startActivity(intent);
+                     }
+                } else {
+                    boolean isCadastrado = dbHelper.saveLancamentoToDatabase(idUsuario, valor, descricao, dataLancamento,LancamentosActivity.this);
+                    if (isCadastrado){
+                        getParent().finish();
+                        Intent intent = new Intent(LancamentosActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    }
                 }
         }});
-    }
 
+    }
 
 
 }
