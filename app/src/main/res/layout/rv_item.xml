@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="0dp"
     app:cardBackgroundColor="#FFFFFF"
-    android:layout_marginTop="16dp"
+    android:layout_marginTop="8dp"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp">
 
@@ -29,13 +29,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-            android:fontFamily="@font/roboto_flex"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            android:maxLines="1"
-            android:text="Descrição"
-            android:background="#00000000"
-            android:layout_gravity="start"/>
+                android:fontFamily="@font/roboto_flex"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Descrição"
+                android:background="#00000000"
+                android:layout_gravity="start"/>
 
 
             <TextView

@@ -16,8 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginStart="10pt"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="40dp"
         android:contentDescription="Logo"
         android:src="@drawable/logo"
         tools:ignore="HardcodedText" />
@@ -68,6 +68,19 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnVerMais"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:textColor="@color/orangeExpend"
+        android:text="Ver Mais"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="75dp"
+        android:layout_gravity="right"
+        tools:ignore="HardcodedText" />
 
     <!-- Botões flutuantes -->
     <LinearLayout

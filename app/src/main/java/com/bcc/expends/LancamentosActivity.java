@@ -4,6 +4,7 @@ import static android.text.TextUtils.isEmpty;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -57,6 +58,9 @@ public class LancamentosActivity extends AppCompatActivity {
         descriptionEditText = findViewById(R.id.descriptionEditText);
         valueEditText = findViewById(R.id.valueEditText);
 
+        SharedPreferences preferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        int userId = preferences.getInt("user_id", -1);
+
         // Inicialize os Spinners
         daySpinner = findViewById(R.id.daySpinner);
         monthSpinner = findViewById(R.id.monthSpinner);
@@ -85,7 +89,7 @@ public class LancamentosActivity extends AppCompatActivity {
         // Configuração para o Spinner de Anos
         ArrayList<String> years = new ArrayList<>();
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        for (int i = currentYear; i >= 1900; i--) {
+        for (int i = currentYear; i >= 1970; i--) {
             years.add(String.valueOf(i));
         }
         ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this, R.layout.spinn, years);
@@ -103,8 +107,8 @@ public class LancamentosActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int issucesso = dbHelper.deleteTransacao(idTransacao);
-                Log.e(TAG, "DELETE: "+ issucesso);
+                dbHelper.deleteTransacao(idTransacao);
+                Log.e(TAG, "DELETE "+idTransacao);
                 finish();
             }
         });
@@ -130,7 +134,7 @@ public class LancamentosActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int idUsuario;
+
                 double valor;
                 String descricao;
 
@@ -139,39 +143,42 @@ public class LancamentosActivity extends AppCompatActivity {
                 String ano = yearSpinner.getSelectedItem().toString();
                 String dataLancamento = ano + "-" + mes + "-" + dia;
 
-                idUsuario = dbHelper.getUsuarioId();
+                String tipo = typeSpinner.getSelectedItem().toString();
+
+                if (tipo.equals("Despesa")) {
+                    valor = Double.parseDouble(valueEditText.getText().toString().trim()) * -1;
+                } else {
+                    valor = Double.parseDouble(valueEditText.getText().toString().trim());
+                }
 
                 descricao = descriptionEditText.getText().toString().trim();
 
-                if ((valueEditText.getText().toString() == "0.0") || (valueEditText.getText().toString().trim().isEmpty())) {
+                if ((valueEditText.getText().toString() == "R$ 0,00") || (valueEditText.getText().toString().trim().isEmpty())) {
                     Toast.makeText(LancamentosActivity.this, "Preencha o valor", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                valor = Double.parseDouble(valueEditText.getText().toString().trim());
 
                 if (descricao == "" || descriptionEditText.getText().toString().trim().isEmpty()) {
                     Toast.makeText(LancamentosActivity.this, "Preencha a descricao", Toast.LENGTH_SHORT).show();
                     return ;
                 }
 
-                if (typeSpinner.getSelectedItemPosition() == 0){
-                    valor = (Math.abs(valor)) * -1.0;
-                }
-
                 if(idTransacao!=0) {
-                     boolean update = dbHelper.updateLancamentoToDatabase(idUsuario, valor, descricao, dataLancamento,LancamentosActivity.this, idTransacao);
-                     if (update){
-                         getParent().finish();
-                         Intent intent = new Intent(LancamentosActivity.this, HomeActivity.class);
-                         startActivity(intent);
-                     }
-                } else {
-                    boolean isCadastrado = dbHelper.saveLancamentoToDatabase(idUsuario, valor, descricao, dataLancamento,LancamentosActivity.this);
-                    if (isCadastrado){
-                        getParent().finish();
-                        Intent intent = new Intent(LancamentosActivity.this, HomeActivity.class);
+                    boolean isUpdate = dbHelper.updateLancamentoToDatabase(userId, valor, descricao, dataLancamento,LancamentosActivity.this);
+                    if (isUpdate){
+                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
+                        finish();
                     }
+                }else {
+                    boolean isCadastrado = dbHelper.saveLancamentoToDatabase(userId, valor, descricao, dataLancamento,LancamentosActivity.this);
+                    if (isCadastrado){
+                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                        }
                 }
         }});
 
