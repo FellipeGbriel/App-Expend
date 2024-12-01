@@ -80,6 +80,13 @@ public class HomeActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), LogoutActivity.class);
             startActivity(intent);
         });
+
+        // Configurando o botão para ver mais
+        Button buttonVerMais = findViewById(R.id.btnVerMais);
+        buttonVerMais.setOnClickListener((View view) -> {
+            Intent intent = new Intent(getApplicationContext(), VerMaisActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void displayData() {

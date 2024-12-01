@@ -126,7 +126,7 @@ public class LancamentosActivity extends AppCompatActivity {
 
                 descricao = descriptionEditText.getText().toString().trim();
 
-                if ((valueEditText.getText().toString() == "0.0") || (valueEditText.getText().toString().trim().isEmpty())) {
+                if ((valueEditText.getText().toString() == "R$ 0,00") || (valueEditText.getText().toString().trim().isEmpty())) {
                     Toast.makeText(LancamentosActivity.this, "Preencha o valor", Toast.LENGTH_SHORT).show();
                     return;
                 }
