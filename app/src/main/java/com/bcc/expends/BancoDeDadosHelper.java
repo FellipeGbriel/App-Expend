@@ -1,5 +1,6 @@
 package com.bcc.expends;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.view.View;
 import android.content.Context;
@@ -201,9 +202,8 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT id_usuario FROM usuarios", null);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT id_usuario FROM usuarios", null);
 
-        // Log.i( "Mytag ::  ", String.valueOf("NUMERO:  " + cursor.getCount()));
         if (cursor.getCount() == 1) {
             return 1;
         } else if (cursor.getCount() >= 2) {
@@ -221,7 +221,7 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
         db.execSQL("PRAGMA foreign_keys = ON;");
 
-        Cursor cursor = db.rawQuery("DELETE FROM transacoes WHERE id_transacao = " + idTransacao, null);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("DELETE FROM transacoes WHERE id_transacao = " + idTransacao, null);
 
     }
 
@@ -236,9 +236,9 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
         values.put("data_transacao", dataLancamento);
 
         long newRowId = db.insert("transacoes", null, values);
-        //Log.e( "newRowId: ", "return :" + newRowId);
+
         if (newRowId != -1) {
-            //Toast.makeText(context, "Lancamento cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+
             return true;
         } else {
             Toast.makeText(context, "Erro ao cadastrar usuário.", Toast.LENGTH_SHORT).show();
@@ -256,9 +256,7 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
         values.put("data_transacao", dataLancamento);
 
         long newRowId = db.insert("transacoes", null, values);
-        //Log.e( "newRowId: ", "return :" + newRowId);
         if (newRowId != -1) {
-            //Toast.makeText(context, "Lancamento cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
             return true;
         } else {
             Toast.makeText(context, "Erro ao cadastrar usuário.", Toast.LENGTH_SHORT).show();
