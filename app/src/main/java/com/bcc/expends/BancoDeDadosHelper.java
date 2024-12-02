@@ -79,6 +79,18 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
                 "    SET saldo_atual = saldo_atual - OLD.valor, ultima_modificacao = CURRENT_TIMESTAMP " +
                 "    WHERE id_usuario = OLD.id_usuario; " +
                 "END;");
+
+        db.execSQL(
+                "CREATE TRIGGER atualiza_saldo_apos_update " +
+                        "AFTER UPDATE ON transacoes " +
+                        "FOR EACH ROW " +
+                        "BEGIN " +
+                        "    UPDATE saldos " +
+                        "    SET saldo_atual = saldo_atual - OLD.valor + NEW.valor, " +
+                        "        ultima_modificacao = CURRENT_TIMESTAMP " +
+                        "    WHERE id_usuario = NEW.id_usuario; " +
+                        "END;"
+        );
     }
 
     @Override
