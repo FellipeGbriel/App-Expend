@@ -56,6 +56,23 @@ public class VerMaisActivity extends AppCompatActivity {
 
     }
 
+    protected void onResume() {
+        super.onResume();
+
+        recyclerView = findViewById(R.id.recyclerViewVerMais);
+        spinnerMes = findViewById(R.id.spinnerMes);
+        spinnerAno = findViewById(R.id.spinnerAno);
+        bancoDeDadosHelper = new BancoDeDadosHelper(this);
+        transacoesPorMesAno = new HashMap<>();
+
+        carregarTransacoes();
+        configurarSpinners();
+
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
     private void carregarTransacoes() {
         SharedPreferences preferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
         int userId = preferences.getInt("user_id", -1);

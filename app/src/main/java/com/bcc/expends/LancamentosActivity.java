@@ -97,7 +97,7 @@ public class LancamentosActivity extends AppCompatActivity {
         yearSpinner.setAdapter(yearAdapter);
 
         // Configuração para o Spinner de tipo
-        String[] types = {"Despesa", "Ganho"};
+        String[] types = {"Saída", "Entrada"};
         ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(this, R.layout.spinn, types);
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(typeAdapter);
@@ -107,8 +107,11 @@ public class LancamentosActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 dbHelper.deleteTransacao(idTransacao);
-                Log.e(TAG, "DELETE "+idTransacao);
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 finish();
             }
         });
@@ -145,18 +148,18 @@ public class LancamentosActivity extends AppCompatActivity {
 
                 String tipo = typeSpinner.getSelectedItem().toString();
 
-                if (tipo.equals("Despesa")) {
+                if ((valueEditText.getText().toString() == "R$ 0,00") || (valueEditText.getText().toString().trim().isEmpty())) {
+                    Toast.makeText(LancamentosActivity.this, "Preencha o valor", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (tipo.equals("Saída")) {
                     valor = Double.parseDouble(valueEditText.getText().toString().trim()) * -1;
                 } else {
                     valor = Math.abs(Double.parseDouble(valueEditText.getText().toString().trim()));
                 }
 
                 descricao = descriptionEditText.getText().toString().trim();
-
-                if ((valueEditText.getText().toString() == "R$ 0,00") || (valueEditText.getText().toString().trim().isEmpty())) {
-                    Toast.makeText(LancamentosActivity.this, "Preencha o valor", Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
                 if (descriptionEditText.getText().toString().trim().isEmpty()) {
                     Toast.makeText(LancamentosActivity.this, "Preencha a descricao", Toast.LENGTH_SHORT).show();

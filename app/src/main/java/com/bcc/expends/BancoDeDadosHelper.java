@@ -190,29 +190,11 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
     }
 
-    //pega e retorna o valor usuario se for o unico no banco local
-    //TODO add tabela de usuario logado
-    //
-    public int getUsuarioId() {
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery("SELECT id_usuario FROM usuarios", null);
-
-        // Log.i( "Mytag ::  ", String.valueOf("NUMERO:  " + cursor.getCount()));
-        if (cursor.getCount() == 1) {
-            return 1;
-        } else if (cursor.getCount() >= 2) {
-            cursor.moveToLast();
-            return cursor.getInt(0);
-        }
-
-        return -1;
-    }
-
     public int deleteTransacao(int idTransacao) {
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("PRAGMA foreign_keys = ON;");
 
         return db.delete("transacoes",  "id_transacao = " + idTransacao, null);
 
@@ -220,7 +202,10 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
     public boolean saveLancamentoToDatabase(int idUsuario, double valor, String descricao, String dataLancamento, Context context) {
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("PRAGMA foreign_keys = ON;");
+
         ContentValues values = new ContentValues();
 
         values.put("id_usuario", idUsuario);
@@ -241,7 +226,10 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
     public boolean updateLancamentoToDatabase(double valor, String descricao, String dataLancamento, Context context, Integer idTransacao) {
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("PRAGMA foreign_keys = ON;");
+
         ContentValues values = new ContentValues();
 
         values.put("valor", valor);
