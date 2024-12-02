@@ -119,16 +119,16 @@ public class LancamentosActivity extends AppCompatActivity {
             Cursor dados = dbHelper.getTransacao(idTransacao);//idTransacao=
             dados.moveToFirst();
             Log.e(TAG, "teste consulta id:" + Arrays.toString(dados.getColumnNames()));
-            descriptionEditText.setText(dados.getString(4));
+            descriptionEditText.setText(dados.getString(3));
             valueEditText.setText(dados.getString(2));
 
-            List<String> data = Arrays.asList(dados.getString(5).split("-"));
+            List<String> data = Arrays.asList(dados.getString(4).split("-"));
             Log.e(TAG, "Data e assim: "+ data.get(0)+ " "+ data.get(1)+ " " + data.get(2) );
             daySpinner.setSelection( Integer.parseInt(data.get(2)) - 1);
             monthSpinner.setSelection(Integer.parseInt(data.get(1)) -1);
             yearSpinner.setSelection(years.indexOf(data.get(0)));
 
-            typeSpinner.setSelection(0);
+            if (dados.getInt(2) > 0){typeSpinner.setSelection(0);} else {typeSpinner.setSelection(0);}
         }
 
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +148,7 @@ public class LancamentosActivity extends AppCompatActivity {
                 if (tipo.equals("Despesa")) {
                     valor = Double.parseDouble(valueEditText.getText().toString().trim()) * -1;
                 } else {
-                    valor = Double.parseDouble(valueEditText.getText().toString().trim());
+                    valor = Math.abs(Double.parseDouble(valueEditText.getText().toString().trim()));
                 }
 
                 descricao = descriptionEditText.getText().toString().trim();
@@ -164,7 +164,7 @@ public class LancamentosActivity extends AppCompatActivity {
                 }
 
                 if(idTransacao!=0) {
-                    boolean isUpdate = dbHelper.updateLancamentoToDatabase(valor, descricao, dataLancamento,LancamentosActivity.this);
+                    boolean isUpdate = dbHelper.updateLancamentoToDatabase(valor, descricao, dataLancamento,LancamentosActivity.this, userId);
                     if (isUpdate){
                         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

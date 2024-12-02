@@ -56,11 +56,13 @@ public class HomeActivity extends AppCompatActivity {
         valor = new ArrayList<>();
         idTransacao = new ArrayList<>();
         recyclerView = findViewById(R.id.rvTransacoes);
+        //todo apagar
         TextView tvSaldo = findViewById(R.id.tvSaldo);
 
         String saldo = bancoDeDadosHelper.getSaldo(1);
         adapter = new RvAdapter(this, valor, descricao, idTransacao);
 
+        //todo apagar
         TextView tvSaldo = findViewById(R.id.tvSaldo);
 
         // Usando o userId de SharedPreferences para obter o saldo
@@ -117,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
                 descricao.add(cursor.getString(0));
                 valor.add(cursor.getString(1));
 
-                Log.e(TAG, "posicao da coluna id: " + cursor.getInt(2));
+                //Log.e(TAG, "posicao da coluna id: " + cursor.getInt(2));
 
                 idTransacao.add(cursor.getInt(2));
             }

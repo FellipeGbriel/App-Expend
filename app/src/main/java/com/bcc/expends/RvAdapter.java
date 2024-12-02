@@ -25,7 +25,7 @@ import java.util.Locale;
 
 public class RvAdapter extends RecyclerView.Adapter<RvAdapter.ViewHolder> {
 
-    private Context context;
+    private final Context context;
 
     private ArrayList descricao, valor;
     private ArrayList<Integer> id;

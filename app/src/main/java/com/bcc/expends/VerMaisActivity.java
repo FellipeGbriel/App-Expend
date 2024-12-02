@@ -19,6 +19,7 @@ public class VerMaisActivity extends AppCompatActivity {
     private VerMaisAdapter adapter;
     private BancoDeDadosHelper bancoDeDadosHelper;
     private Map<String, ArrayList<Transacao>> transacoesPorMes;
+    private ArrayList<Integer> id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,8 @@ public class VerMaisActivity extends AppCompatActivity {
 
         carregarTransacoes();
 
-        adapter = new VerMaisAdapter(this, transacoesPorMes);
+        //todo apagar
+        adapter = new VerMaisAdapter(this, transacoesPorMes, id);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -48,16 +50,18 @@ public class VerMaisActivity extends AppCompatActivity {
             String descricao = cursor.getString(cursor.getColumnIndex("descricao"));
             String valor = cursor.getString(cursor.getColumnIndex("valor"));
             String dataTransacao = cursor.getString(cursor.getColumnIndex("data_transacao"));
+            Integer idTransacao = cursor.getInt(cursor.getColumnIndex("id_transacao"));
 
             try {
                 Date date = inputFormat.parse(dataTransacao);
                 String mesAno = outputFormat.format(date); // Converte para o formato correto
-                Transacao transacao = new Transacao(descricao, valor, dataTransacao);
+                Transacao transacao = new Transacao(descricao, valor, dataTransacao, idTransacao);
 
                 if (!transacoesPorMes.containsKey(mesAno)) {
                     transacoesPorMes.put(mesAno, new ArrayList<>());
                 }
                 transacoesPorMes.get(mesAno).add(transacao);
+
             } catch (Exception e) {
                 e.printStackTrace(); // Tratamento de erro para caso a data esteja inválida
             }

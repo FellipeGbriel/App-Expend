@@ -1,17 +1,13 @@
 package com.bcc.expends;
 
 import android.content.ContentValues;
-import android.view.View;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-
-import java.io.Console;
 
 public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
@@ -101,7 +97,7 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT descricao, valor FROM transacoes WHERE id_usuario =" + usuario + " ORDER BY data_transacao DESC LIMIT 5", null);
+        Cursor cursor = db.rawQuery("SELECT descricao, valor, id_transacao FROM transacoes WHERE id_usuario =" + usuario + " ORDER BY data_transacao DESC LIMIT 5", null);
 
         return cursor;
 
@@ -110,7 +106,7 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT descricao, valor FROM transacoes WHERE  id_transacao = " + idTransacao , null);
+        Cursor cursor = db.rawQuery("SELECT * FROM transacoes WHERE  id_transacao = " + idTransacao , null);
 
         return cursor;
 
@@ -214,14 +210,11 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public void deleteTransacao(int idTransacao) {
-
+    public int deleteTransacao(int idTransacao) {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        db.execSQL("PRAGMA foreign_keys = ON;");
-
-        Cursor cursor = db.rawQuery("DELETE FROM transacoes WHERE id_transacao = " + idTransacao, null);
+        return db.delete("transacao",  "id_transacao = " + idTransacao, null);
 
     }
 
@@ -246,7 +239,7 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean updateLancamentoToDatabase(double valor, String descricao, String dataLancamento, Context context) {
+    public boolean updateLancamentoToDatabase(double valor, String descricao, String dataLancamento, Context context, Integer idTransacao) {
 
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues values = new ContentValues();
@@ -255,7 +248,7 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
         values.put("descricao", descricao);
         values.put("data_transacao", dataLancamento);
 
-        long newRowId = db.insert("transacoes", null, values);
+        long newRowId = db.update("transacoes", values, "id_transacao = " + idTransacao, null);
         //Log.e( "newRowId: ", "return :" + newRowId);
         if (newRowId != -1) {
             //Toast.makeText(context, "Lancamento cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
@@ -268,6 +261,6 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
     public Cursor getTransacoesVerMais ( int usuario){
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT descricao, valor, data_transacao FROM transacoes WHERE id_usuario = ? ORDER BY data_criado DESC", new String[]{String.valueOf(usuario)});
+        return db.rawQuery("SELECT descricao, valor, data_transacao, id_transacao FROM transacoes WHERE id_usuario = ? ORDER BY data_criado DESC", new String[]{String.valueOf(usuario)});
     }
 }

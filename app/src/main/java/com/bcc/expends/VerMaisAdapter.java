@@ -25,14 +25,16 @@ public class VerMaisAdapter extends RecyclerView.Adapter<VerMaisAdapter.ViewHold
     private List<String> meses;
 
     private ArrayList descricao, valor;
+    private ArrayList<Integer> id;
     private Map<String, ArrayList<Transacao>> transacoesPorMes;
 
-    public VerMaisAdapter(Context context, Map<String, ArrayList<Transacao>> transacoesPorMes) {
+    public VerMaisAdapter(Context context, Map<String, ArrayList<Transacao>> transacoesPorMes,ArrayList<Integer> id) {
         this.context = context;
         this.transacoesPorMes = transacoesPorMes;
         this.meses = new ArrayList<>(transacoesPorMes.keySet());
         this.descricao = descricao;
         this.valor = valor;
+        this.id = id;
     }
 
     @Override
@@ -58,7 +60,7 @@ public class VerMaisAdapter extends RecyclerView.Adapter<VerMaisAdapter.ViewHold
         }
 
         // Configurar o RecyclerView interno
-        TransacoesAdapter transacoesAdapter = new TransacoesAdapter(context, transacoes);
+        TransacoesAdapter transacoesAdapter = new TransacoesAdapter(context, transacoes, id);
         holder.recyclerViewTransacoes.setAdapter(transacoesAdapter);
         holder.recyclerViewTransacoes.setLayoutManager(new LinearLayoutManager(context));
     }
