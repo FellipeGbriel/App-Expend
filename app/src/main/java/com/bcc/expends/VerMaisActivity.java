@@ -50,8 +50,7 @@ public class VerMaisActivity extends AppCompatActivity {
         carregarTransacoes();
         configurarSpinners();
 
-        //todo apagar
-        adapter = new VerMaisAdapter(this, transacoesPorMes, id);
+        
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -239,7 +238,7 @@ public class VerMaisActivity extends AppCompatActivity {
             }
         }
 
-        adapter = new VerMaisAdapter(VerMaisActivity.this, transacoesFiltradas);
+        adapter = new VerMaisAdapter(VerMaisActivity.this, transacoesFiltradas,id);
         recyclerView.setAdapter(adapter);
     }
 }

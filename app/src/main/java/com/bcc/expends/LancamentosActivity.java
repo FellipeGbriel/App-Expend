@@ -158,7 +158,7 @@ public class LancamentosActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (descricao == "" || descriptionEditText.getText().toString().trim().isEmpty()) {
+                if (descriptionEditText.getText().toString().trim().isEmpty()) {
                     Toast.makeText(LancamentosActivity.this, "Preencha a descricao", Toast.LENGTH_SHORT).show();
                     return ;
                 }

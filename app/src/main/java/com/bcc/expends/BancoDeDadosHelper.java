@@ -214,7 +214,7 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        return db.delete("transacao",  "id_transacao = " + idTransacao, null);
+        return db.delete("transacoes",  "id_transacao = " + idTransacao, null);
 
     }
 
