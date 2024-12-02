@@ -164,7 +164,7 @@ public class LancamentosActivity extends AppCompatActivity {
                 }
 
                 if(idTransacao!=0) {
-                    boolean isUpdate = dbHelper.updateLancamentoToDatabase(userId, valor, descricao, dataLancamento,LancamentosActivity.this);
+                    boolean isUpdate = dbHelper.updateLancamentoToDatabase(valor, descricao, dataLancamento,LancamentosActivity.this);
                     if (isUpdate){
                         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
