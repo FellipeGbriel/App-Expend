@@ -1,16 +1,11 @@
 package com.bcc.expends;
 
-import static android.text.TextUtils.isEmpty;
-
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,11 +42,11 @@ public class LancamentosActivity extends AppCompatActivity {
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(Type.systemBars());
-            v.setPadding(systemBars.left, ((androidx.core.graphics.Insets) systemBars).top, systemBars.right, systemBars.bottom);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        Integer idTransacao = getIntent().getIntExtra("id_transacao",0);
+        int idTransacao = getIntent().getIntExtra("id_transacao",0);
         Log.e(TAG, "id transacao from extra: "+idTransacao);
 
         // Inicialize os EditTexts
@@ -104,17 +99,14 @@ public class LancamentosActivity extends AppCompatActivity {
 
         //trigger do botão ao clicar create and delete
 
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dbHelper.deleteTransacao(idTransacao);
-                Log.e(TAG, "DELETE "+idTransacao);
-                finish();
-            }
+        deleteButton.setOnClickListener(view -> {
+            dbHelper.deleteTransacao(idTransacao);
+            Log.e(TAG, "DELETE "+idTransacao);
+            finish();
         });
 
         Log.e(TAG, "inicio do caregamento ");
-        if (idTransacao != 0 && idTransacao > 0){
+        if (idTransacao > 0){
 
             Cursor dados = dbHelper.getTransacao(idTransacao);//idTransacao=
             dados.moveToFirst();
@@ -131,56 +123,54 @@ public class LancamentosActivity extends AppCompatActivity {
             typeSpinner.setSelection(0);
         }
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        saveButton.setOnClickListener(view -> {
 
-                double valor;
-                String descricao;
+            double valor;
+            String descricao;
 
-                String dia = daySpinner.getSelectedItem().toString();
-                String mes = String.valueOf(monthSpinner.getSelectedItemPosition() + 1);
-                String ano = yearSpinner.getSelectedItem().toString();
-                String dataLancamento = ano + "-" + mes + "-" + dia;
+            String dia = daySpinner.getSelectedItem().toString();
+            String mes = String.valueOf(monthSpinner.getSelectedItemPosition() + 1);
+            String ano = yearSpinner.getSelectedItem().toString();
+            String dataLancamento = ano + "-" + mes + "-" + dia;
 
-                String tipo = typeSpinner.getSelectedItem().toString();
+            String tipo = typeSpinner.getSelectedItem().toString();
 
-                if (tipo.equals("Despesa")) {
-                    valor = Double.parseDouble(valueEditText.getText().toString().trim()) * -1;
-                } else {
-                    valor = Double.parseDouble(valueEditText.getText().toString().trim());
+            if (tipo.equals("Despesa")) {
+                valor = Double.parseDouble(valueEditText.getText().toString().trim()) * -1;
+            } else {
+                valor = Double.parseDouble(valueEditText.getText().toString().trim());
+            }
+
+            descricao = descriptionEditText.getText().toString().trim();
+
+            if ((valueEditText.getText().toString().equals("R$ 0,00")) || (valueEditText.getText().toString().trim().isEmpty())) {
+                Toast.makeText(LancamentosActivity.this, "Preencha o valor", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (descriptionEditText.getText().toString().trim().isEmpty() || descricao.isEmpty()) {
+                Toast.makeText(LancamentosActivity.this, "Preencha a descricao", Toast.LENGTH_SHORT).show();
+                return ;
+            }
+
+            if(idTransacao!=0) {
+                boolean isUpdate = dbHelper.updateLancamentoToDatabase(valor, descricao, dataLancamento,LancamentosActivity.this);
+                if (isUpdate){
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
                 }
-
-                descricao = descriptionEditText.getText().toString().trim();
-
-                if ((valueEditText.getText().toString() == "R$ 0,00") || (valueEditText.getText().toString().trim().isEmpty())) {
-                    Toast.makeText(LancamentosActivity.this, "Preencha o valor", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (descricao == "" || descriptionEditText.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(LancamentosActivity.this, "Preencha a descricao", Toast.LENGTH_SHORT).show();
-                    return ;
-                }
-
-                if(idTransacao!=0) {
-                    boolean isUpdate = dbHelper.updateLancamentoToDatabase(valor, descricao, dataLancamento,LancamentosActivity.this);
-                    if (isUpdate){
-                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
+            }else {
+                boolean isCadastrado = dbHelper.saveLancamentoToDatabase(userId, valor, descricao, dataLancamento,LancamentosActivity.this);
+                if (isCadastrado){
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
                     }
-                }else {
-                    boolean isCadastrado = dbHelper.saveLancamentoToDatabase(userId, valor, descricao, dataLancamento,LancamentosActivity.this);
-                    if (isCadastrado){
-                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-                        }
-                }
-        }});
+            }
+    });
 
     }
 
