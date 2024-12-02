@@ -123,7 +123,7 @@ public class LancamentosActivity extends AppCompatActivity {
             dados.moveToFirst();
             Log.e(TAG, "teste consulta id:" + Arrays.toString(dados.getColumnNames()));
             descriptionEditText.setText(dados.getString(3));
-            valueEditText.setText(dados.getString(2));
+            valueEditText.setText(String.valueOf(Math.abs(Double.parseDouble(dados.getString(2)))));
 
             List<String> data = Arrays.asList(dados.getString(4).split("-"));
             Log.e(TAG, "Data e assim: "+ data.get(0)+ " "+ data.get(1)+ " " + data.get(2) );
