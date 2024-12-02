@@ -16,8 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginStart="10pt"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="40dp"
         android:contentDescription="Logo"
         android:src="@drawable/logo"
         tools:ignore="HardcodedText" />
@@ -69,6 +69,19 @@
         android:layout_weight="1"
         android:layout_marginBottom="16dp"/>
 
+    <Button
+        android:id="@+id/btnVerMais"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:textColor="@color/orangeExpend"
+        android:text="Ver Mais"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="75dp"
+        android:layout_gravity="right"
+        tools:ignore="HardcodedText" />
+
     <!-- Botões flutuantes -->
     <LinearLayout
         android:layout_width="wrap_content"
@@ -81,21 +94,29 @@
         <Button
             android:id="@+id/perfil_button"
             android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/custom_button_direita"
+            android:background="@drawable/custom_button_esquerda"
             android:contentDescription="Conta"
-            android:drawableRight="@drawable/custom_button_esquerda_icon" />
+            android:drawableTop="@drawable/custom_button_esquerda_icon"
+            android:paddingLeft="8dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="0dp"
+            android:drawableTint="@color/white"
+            />
 
         <!-- Botão de adicionar -->
         <Button
             android:id="@+id/adicionar_button"
             android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/custom_button_esquerda"
+            android:layout_height="48dp"
+            android:background="@drawable/custom_button_direita"
             android:contentDescription="Adicionar"
-            android:drawableLeft="@drawable/custom_button_direita_icon"
-            android:gravity="center_horizontal" />
+            android:drawableEnd="@drawable/custom_button_direita_icon"
+            android:gravity="center"
+            android:paddingEnd="12dp"
+            android:drawableTint="@color/white"
+            />
 
     </LinearLayout>
 

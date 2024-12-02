@@ -1,6 +1,7 @@
 package com.bcc.expends;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -45,14 +46,21 @@ public class LoginActivity extends AppCompatActivity {
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(LoginActivity.this, "Por favor, preencha todos os campos", Toast.LENGTH_SHORT).show();
             } else {
-                if (validateLogin(email, password)) {
+                int userId = getUserId(email, password);
+                if (userId != -1) {
                     Toast.makeText(LoginActivity.this, "Login bem-sucedido", Toast.LENGTH_SHORT).show();
 
+                    SharedPreferences preferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean("is_logged_in", true);
+                    editor.putInt("user_id", userId);
+                    editor.apply();
 
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
-
                     finish();
+
                 } else {
                     Toast.makeText(LoginActivity.this, "Email ou senha incorretos", Toast.LENGTH_SHORT).show();
                 }
@@ -63,16 +71,23 @@ public class LoginActivity extends AppCompatActivity {
         btnRecuperarSenha.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), Recuperacao.class);
             startActivity(intent);
+
         });
     }
 
-    private boolean validateLogin(String email, String password) {
+    private int getUserId(String email, String password) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String query = "SELECT * FROM usuarios WHERE email = ? AND senha = ?";
+        String query = "SELECT id_usuario FROM usuarios WHERE email = ? AND senha = ?";
         Cursor cursor = db.rawQuery(query, new String[]{email, password});
-        boolean isValid = cursor.getCount() > 0;
+
+        int userId = -1; // valor padrão para id inválido
+        if (cursor.moveToFirst()) {
+            userId = cursor.getInt(cursor.getColumnIndexOrThrow("id_usuario"));
+        }
         cursor.close();
         db.close();
-        return isValid;
+        return userId;
     }
+
+
 }

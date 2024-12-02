@@ -21,5 +21,20 @@
     <string name="hint_nome">Nome</string>
     <string name="data_de_nascimento">Data de nascimento:</string>
 
+    <string name="label_description">Descrição:</string>
+    <string name="hint_description">Descrição...</string>
+    <string name="save">Salvar</string>
+    <string name="data_do_lancamento">Data do Lançamento:</string>
+    <string name="tipo">Tipo</string>
+    <string name="label_value">Valor:</string> <!-- Adicionado aqui -->
+    <string name="hint_value">R$ 0,00</string> <!-- Adicionado aqui -->
 
+    <item name="saveButton" type="id" />
+    <item name="descriptionLabel" type="id" />
+    <item name="descriptionEditText" type="id" />
+    <item name="dataDoLancamentoLabel" type="id" />
+    <item name="typeSpinner" type="id" />
+    <item name="typeLabel" type="id" />
+    <item name="valueLabel" type="id" />
+    <item name="valueEditText" type="id" />
 </resources>

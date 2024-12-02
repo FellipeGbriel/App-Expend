@@ -1,10 +1,8 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-
-        android:drawable="@drawable/icone_pessoa"
+        android:drawable="@drawable/pessoa_icon"
         android:width="25dp"
         android:height="25dp"
-        >
-    </item>
+        />
 </layer-list>
 
