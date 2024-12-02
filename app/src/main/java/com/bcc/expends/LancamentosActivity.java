@@ -1,12 +1,16 @@
 package com.bcc.expends;
 
+import static android.text.TextUtils.isEmpty;
+
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,10 +24,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat.Type;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 public class LancamentosActivity extends AppCompatActivity {
 
+    private final String TAG = "AppExpendLog";
     private EditText descriptionEditText;
     private EditText valueEditText;
     private Spinner daySpinner;
@@ -36,6 +43,7 @@ public class LancamentosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lancamentos);
+         dbHelper = new BancoDeDadosHelper(this);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(Type.systemBars());
@@ -43,8 +51,8 @@ public class LancamentosActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Inicializa Helper de BD
-        dbHelper = new BancoDeDadosHelper(this);
+        Integer idTransacao = getIntent().getIntExtra("id_transacao",0);
+        Log.e(TAG, "id transacao from extra: "+idTransacao);
 
         // Inicialize os EditTexts
         descriptionEditText = findViewById(R.id.descriptionEditText);
@@ -81,7 +89,7 @@ public class LancamentosActivity extends AppCompatActivity {
         // Configuração para o Spinner de Anos
         ArrayList<String> years = new ArrayList<>();
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        for (int i = currentYear; i >= 1900; i--) {
+        for (int i = currentYear; i >= 1970; i--) {
             years.add(String.valueOf(i));
         }
         ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this, R.layout.spinn, years);
@@ -96,13 +104,32 @@ public class LancamentosActivity extends AppCompatActivity {
 
         //trigger do botão ao clicar create and delete
 
-        int idLancamento = getIntent().getIntExtra("id_transacao",-1);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbHelper.deleteTransacao(idLancamento);
+                dbHelper.deleteTransacao(idTransacao);
+                Log.e(TAG, "DELETE "+idTransacao);
+                finish();
             }
         });
+
+        Log.e(TAG, "inicio do caregamento ");
+        if (idTransacao != 0 && idTransacao > 0){
+
+            Cursor dados = dbHelper.getTransacao(idTransacao);//idTransacao=
+            dados.moveToFirst();
+            Log.e(TAG, "teste consulta id:" + Arrays.toString(dados.getColumnNames()));
+            descriptionEditText.setText(dados.getString(4));
+            valueEditText.setText(dados.getString(2));
+
+            List<String> data = Arrays.asList(dados.getString(5).split("-"));
+            Log.e(TAG, "Data e assim: "+ data.get(0)+ " "+ data.get(1)+ " " + data.get(2) );
+            daySpinner.setSelection( Integer.parseInt(data.get(2)) - 1);
+            monthSpinner.setSelection(Integer.parseInt(data.get(1)) -1);
+            yearSpinner.setSelection(years.indexOf(data.get(0)));
+
+            typeSpinner.setSelection(0);
+        }
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,17 +163,26 @@ public class LancamentosActivity extends AppCompatActivity {
                     return ;
                 }
 
-                boolean isCadastrado = dbHelper.saveLancamentoToDatabase(userId, valor, descricao, dataLancamento,LancamentosActivity.this);
-                if (isCadastrado){
-
-                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                if(idTransacao!=0) {
+                    boolean isUpdate = dbHelper.updateLancamentoToDatabase(valor, descricao, dataLancamento,LancamentosActivity.this);
+                    if (isUpdate){
+                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                }else {
+                    boolean isCadastrado = dbHelper.saveLancamentoToDatabase(userId, valor, descricao, dataLancamento,LancamentosActivity.this);
+                    if (isCadastrado){
+                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                        }
                 }
         }});
-    }
 
+    }
 
 
 }

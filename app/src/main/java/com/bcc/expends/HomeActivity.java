@@ -1,9 +1,13 @@
 package com.bcc.expends;
 
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,6 +27,7 @@ import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private static final String TAG = "AppExpendLogs";
     RecyclerView recyclerView;
     ArrayList<String> descricao, valor;
     ArrayList<Integer> idTransacao;
@@ -51,7 +56,10 @@ public class HomeActivity extends AppCompatActivity {
         valor = new ArrayList<>();
         idTransacao = new ArrayList<>();
         recyclerView = findViewById(R.id.rvTransacoes);
-        adapter = new RvAdapter(this, valor, descricao);
+        TextView tvSaldo = findViewById(R.id.tvSaldo);
+
+        String saldo = bancoDeDadosHelper.getSaldo(1);
+        adapter = new RvAdapter(this, valor, descricao, idTransacao);
 
         TextView tvSaldo = findViewById(R.id.tvSaldo);
 
@@ -122,6 +130,11 @@ public class HomeActivity extends AppCompatActivity {
             while (cursor.moveToNext()) {
                 descricao.add(cursor.getString(0));
                 valor.add(cursor.getString(1));
+
+                Log.e(TAG, "posicao da coluna id: " + cursor.getInt(2));
+
+                idTransacao.add(cursor.getInt(2));
+
             }
 
             adapter.notifyDataSetChanged(); // Notifica o adapter sobre os dados atualizados
