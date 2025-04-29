@@ -5,9 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
+import com.google.protobuf.Value;
+
+import java.io.Console;
 
 public class BancoDeDadosHelper extends SQLiteOpenHelper {
 
@@ -154,6 +159,27 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
         return nome;
     }
 
+    public int updateNome(Context context,int idUsuario, String novoNome) {
+
+        Log.e( "UPDATE_NOME", "TENTANDO ATUALIZAR com o nome"+ novoNome);
+
+        ContentValues values = new ContentValues();
+        values.put("nome_usuario", novoNome);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        long newRowId  = db.update("usuarios", values, "id_usuario = ?", new String[]{String.valueOf(idUsuario)});
+
+        Log.e( "UPDATE_NOME", "TENTANDO ATUALIZAR 2");
+        if (newRowId != -1 ) {
+            Toast.makeText(context, "sucesso ao atualizar", Toast.LENGTH_SHORT).show();
+            Log.e( "UPDATE_NOME", "sucesso");
+            return 1;
+        } else {
+            Log.e( "UPDATE_NOME", "erro");
+            return -1;
+        }
+    }
+
     public String getEmail(int usuario) {
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -166,6 +192,26 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
         return email;
     }
 
+    public int updateEmail(Context context,int idUsuario, String novoEmail) {
+
+        Log.e( "UPDATE_NOME", "TENTANDO ATUALIZAR com o Email "+ novoEmail);
+
+        ContentValues values = new ContentValues();
+        values.put("email", novoEmail);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        long newRowId  = db.update("usuarios", values, "id_usuario = ?", new String[]{String.valueOf(idUsuario)});
+
+        if (newRowId != -1 ) {
+            Toast.makeText(context, "sucesso ao atualizar", Toast.LENGTH_SHORT).show();
+            return 1;
+        } else {
+            Log.e( "UPDATE_NOME", "erro");
+            return -1;
+        }
+    }
+
+
     public String getRenda(int usuario) {
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -176,6 +222,25 @@ public class BancoDeDadosHelper extends SQLiteOpenHelper {
             cursor.close();
         }
         return renda;
+    }
+
+    public int updateRenda(Context context,int idUsuario, String novaRenda) {
+
+        Log.e( "UPDATE_NOME", "TENTANDO ATUALIZAR com a renda "+ novaRenda);
+
+        ContentValues values = new ContentValues();
+        values.put("renda_mensal", novaRenda);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        long newRowId  = db.update("usuarios", values, "id_usuario = ?", new String[]{String.valueOf(idUsuario)});
+
+        if (newRowId != -1 ) {
+            Toast.makeText(context, "sucesso ao atualizar", Toast.LENGTH_SHORT).show();
+            return 1;
+        } else {
+            Log.e( "UPDATE_NOME", "erro");
+            return -1;
+        }
     }
 
 
